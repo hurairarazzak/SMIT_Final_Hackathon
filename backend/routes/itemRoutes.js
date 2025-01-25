@@ -1,58 +1,71 @@
-import express from 'express';
-import Item from '../models/itemModel.js';
+import express from "express";
+import Item from "../models/itemModel.js";
 
 const itemRoute = express.Router();
 
 // POST: Create a new item
-itemRoute.post('/', async (req, res) => {
+itemRoute.post("/", async (req, res) => {
     try {
-        const newItem = new Item(req.body);
+        console.log("Received Data:", req.body); // Debugging
+        const { title, description, price, category } = req.body;
+
+        // Validate required fields
+        if (!title) {
+            return res.status(400).json({ error: "Title is required" });
+        }
+
+        const newItem = new Item({ title, description, price, category });
         await newItem.save();
         res.status(201).json(newItem);
     } catch (err) {
+        console.error("Error Saving Item:", err.message); // Debugging
         res.status(500).json({ error: err.message });
     }
 });
 
 // GET: Retrieve all items
-itemRoute.get('/', async (req, res) => {
+itemRoute.get("/", async (req, res) => {
     try {
         const items = await Item.find();
         res.status(200).json(items);
     } catch (err) {
+        console.error("Error Retrieving Items:", err.message); // Debugging
         res.status(500).json({ error: err.message });
     }
 });
 
 // GET by ID: Retrieve a specific item by ID
-itemRoute.get('/:id', async (req, res) => {
+itemRoute.get("/:id", async (req, res) => {
     try {
         const item = await Item.findById(req.params.id);
         if (!item) return res.status(404).json({ error: "Item not found" });
         res.status(200).json(item);
     } catch (err) {
+        console.error("Error Retrieving Item by ID:", err.message); // Debugging
         res.status(500).json({ error: err.message });
     }
 });
 
 // PUT: Update an item by ID
-itemRoute.put('/:id', async (req, res) => {
+itemRoute.put("/:id", async (req, res) => {
     try {
         const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!updatedItem) return res.status(404).json({ error: "Item not found" });
         res.status(200).json(updatedItem);
     } catch (err) {
+        console.error("Error Updating Item:", err.message); // Debugging
         res.status(500).json({ error: err.message });
     }
 });
 
 // DELETE: Remove an item by ID
-itemRoute.delete('/:id', async (req, res) => {
+itemRoute.delete("/:id", async (req, res) => {
     try {
         const deletedItem = await Item.findByIdAndDelete(req.params.id);
         if (!deletedItem) return res.status(404).json({ error: "Item not found" });
         res.status(200).json({ message: "Item deleted successfully" });
     } catch (err) {
+        console.error("Error Deleting Item:", err.message); // Debugging
         res.status(500).json({ error: err.message });
     }
 });
