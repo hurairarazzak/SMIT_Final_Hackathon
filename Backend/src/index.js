@@ -23,7 +23,7 @@ app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/user", userRoute);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is on port ${PORT}`);
 });
 
 mongoose
