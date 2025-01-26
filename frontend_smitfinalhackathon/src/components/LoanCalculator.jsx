@@ -91,7 +91,7 @@ export default function LoanCalculator() {
       // Make API request
       const res = await axios.post(AppRoutes.sendLoginPassword, {
         senderName: values.name,
-        sender: "hurairarazzak125@gmail.com",
+        sender: "adnanshaikh84482@gmail.com",
         receiver: values.email,
         subject: "Your Account Password",
         message: `

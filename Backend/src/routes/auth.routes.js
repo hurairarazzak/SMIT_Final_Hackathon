@@ -8,6 +8,8 @@ import { loginSchema, userSchema } from "../schemas/user.schema.js";
 
 const router = express.Router();
 
+
+
 // User login route
 router.post("/login", async (req, res) => {
   try {
@@ -20,7 +22,7 @@ router.post("/login", async (req, res) => {
 
     if (!user) return sendResponse(res, 403, null, true, "User is not registered with this email.");
 
-    const isPasswordValid = bcrypt.compare(value.password, user.password);
+    const isPasswordValid = await bcrypt.compare(value.password, user.password);
     if (!isPasswordValid) return sendResponse(res, 403, null, true, "Invalid Credentials");
     let token = jwt.sign(user, process.env.AUTH_SECRET)
 

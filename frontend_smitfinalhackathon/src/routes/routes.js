@@ -1,5 +1,6 @@
 const devUrl = "http://localhost:4000/";
-const prodUrl = "https://smit-final-hackathon-backend-livid.vercel.app"; // Add the backend production URL here
+// Add the backend production URL here
+const prodUrl = "https://smit-final-hackathon-backend-livid.vercel.app/"; 
 
 // Set BASE_URL depending on the environment
 export const BASE_URL = prodUrl;

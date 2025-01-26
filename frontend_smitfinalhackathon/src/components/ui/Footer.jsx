@@ -3,67 +3,82 @@ import logo from "../../assets/logo.png";
 
 const Footer = () => {
   return (
-    <div className="pt-20">
-      <div className="flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 my-10 mt-10 text-sm">
+    <div className="pt-20 px-5 sm:px-10 lg:px-20">
+      {/* Footer Grid */}
+      <div className="flex flex-col sm:grid grid-cols-1 sm:grid-cols-[3fr_1fr_1fr] gap-10 sm:gap-14 my-10 text-sm">
+        {/* Logo and Description */}
         <div className="flex flex-col">
-          {/* Larger logo with fixed width and added margin */}
           <img
             src={logo}
-            className="w-64 mr-7" /* Increased width to w-64 and added left margin */
+            className="w-48 sm:w-64 mb-5" // Responsive width and bottom margin
             alt="logo"
           />
-          <p className="w-full md:w-2/3 text-gray-600">
+          <p className="text-gray-600 leading-relaxed">
             Saylani Welfare International Trust has been working for the last 22
             years to improve the conditions of the less privileged, helpless,
             and handicapped individuals. The organization is working day and
             night to make life happier, especially for the middle class, lower
-            middle class and even lower class. At time of establishing the
-            organization, the founder of Saylani Welfare International Trust and
-            a few of his associates had made a commitment to serve the
-            distressed people living in Pakistan and abroad in all stages of
-            life. It is a blessing in disguise that today the organization is
-            serving humanity in more than 63 areas of life without any
-            discrimination.
+            middle class, and even lower class.
           </p>
         </div>
 
+        {/* Company Links */}
         <div>
-          <p className="text-xl font-medium mb-5">COMPANY</p>
-          <ul className="flex flex-col gap-1 text-gray-600">
-            <li>Home</li>
-            <li>About</li>
-            <li>Services</li>
-            <li>Contact</li>
+          <p className="text-lg font-medium mb-5">COMPANY</p>
+          <ul className="flex flex-col gap-3 text-gray-600">
+            <li className="hover:text-indigo-500 cursor-pointer">Home</li>
+            <li className="hover:text-indigo-500 cursor-pointer">About</li>
+            <li className="hover:text-indigo-500 cursor-pointer">Services</li>
+            <li className="hover:text-indigo-500 cursor-pointer">Contact</li>
           </ul>
         </div>
 
+        {/* Contact Information */}
         <div>
-          <p className="text-xl font-medium mb-5">GET IN TOUCH</p>
-          <ul className="flex flex-col gap-1 text-gray-600">
-            <li>+92 304 3712471</li>
+          <p className="text-lg font-medium mb-5">GET IN TOUCH</p>
+          <ul className="flex flex-col gap-3 text-gray-600">
+            <li>(+0092-213) 4130786-90</li>
             <li>
-              <a href="mailto:adnanshaikh84482@gmail.com">
-              adnanshaikh84482@gmail.com
+              <a
+                href="mailto:adnanshaikh84482@gmail.com"
+                className="hover:text-indigo-500"
+              >
+                info@saylaniwelfare.com
               </a>
             </li>
             <li>
-              <a href="https://www.facebook.com/SaylaniWelfareInternationalTrust/">
+              <a
+                href="https://www.facebook.com/SaylaniWelfareInternationalTrust/"
+                className="hover:text-indigo-500"
+              >
                 Facebook
               </a>
             </li>
             <li>
-              <a href="https://www.linkedin.com/in/">LinkedIn</a>
+              <a
+                href="https://www.linkedin.com/in/"
+                className="hover:text-indigo-500"
+              >
+                LinkedIn
+              </a>
             </li>
           </ul>
         </div>
       </div>
 
-      <div>
-        <hr />
-        <p className="py-5 text-sm text-center">
-          © Copyright 2025 Saylaniwelafare - All Right Reserved.
-        </p>
-      </div>
+      {/* Footer Bottom */}
+<div>
+  <hr className="border-gray-300" />
+  <div className="flex flex-col sm:flex-row justify-between items-center">
+    <p className="py-5 text-sm text-left text-gray-500 w-full sm:w-auto">
+      © Copyright 2025 Saylani Welfare Microfinance Bank - All Rights Reserved.
+    </p>
+    <p className="py-5 text-sm text-right text-gray-500 w-full sm:w-auto">
+      Developed by Engr. Muhammad Adnan
+    </p>
+  </div>
+</div>
+
     </div>
   );
 };

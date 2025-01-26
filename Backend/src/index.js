@@ -6,6 +6,7 @@ import morgan from "morgan";
 import authRoute from "./routes/auth.routes.js";
 import userRoute from "./routes/user.routes.js";
 
+
 dotenv.config();
 
 const app = express();
@@ -16,14 +17,17 @@ app.use(cors("*"));
 app.use(express.json());
 app.use(morgan("tiny"));
 
+
 // Auth Routes
 app.use("/api/v1/auth", authRoute);
 
 // Auth Routes
 app.use("/api/v1/user", userRoute);
 
+
+
 app.listen(PORT, () => {
-  console.log(`Server is on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
 
 mongoose
