@@ -1,29 +1,37 @@
-import express from "express";
-import mongoose from "mongoose";
-import cors from 'cors'
-import dotenv from "dotenv/config";
-import userRoute from './routes/userRoute.js'
-import itemRoute from './routes/itemRoutes.js'
+const express = require('express');
+const dotenv = require('dotenv');
+const connectDB = require('./config/db');
+const authRoutes = require('./routes/authRoutes');
+const beneficiaryRoutes = require('./routes/beneficiaryRoutes');
+// const tokenRoutes = require('./routes/tokenRoutes');
+const cors = require('cors')
+const { authenticate, authorize } = require('./middleware/authMiddleware')
+
+const { editBeneficiary, deleteBeneficiary } = require('./controllers/beneficiaryController');
+const { getAllUsers, editUser, deleteUser } = require('./controllers/authController');
+
+dotenv.config();
+connectDB();
 
 const app = express();
+
+app.use(cors()); // Enable CORS for all routes
+
+
 app.use(express.json());
+app.use('/api/auth', authRoutes);
+app.use('/api/beneficiaries', beneficiaryRoutes);
 
-app.use(cors())
+app.put('/api/beneficiaries/editBeneficiary', authenticate, authorize(['Admin', 'Receptionist']), editBeneficiary);
+// DELETE /deleteBeneficiary
+app.delete('/api/beneficiaries/deleteBeneficiary', authenticate, authorize(['Admin']), deleteBeneficiary);
+// app.use('/api/tokens', tokenRoutes);
+// GET /getAllUsers
+app.get('/api/auth/getAllUsers', authenticate, authorize(['Admin']), getAllUsers);
+// PUT /editUser
 
-app.use('/user', userRoute);
-app.use('/api/items', itemRoute);
+// DELETE /deleteUser
 
-app.get("/", (req, res) => {
-    res.send("Server Started")
-})
 
-mongoose
-    .connect(process.env.MONGO_URI)
-    .then(() => {
-        app.listen(5000, (req, res) => {
-            console.log("DB Connected And Server Started.");
-        })
-    })
-    .catch((error) => {
-        console.log(error);
-    })
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
