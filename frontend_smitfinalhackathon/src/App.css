@@ -1,11 +1,1 @@
-body {
-  margin: 0;
-  font-family: "Roboto", sans-serif;
-}
-.ant-layout-header {
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-.ant-menu {
-  line-height: 64px;
-}
+@import "tailwindcss";
