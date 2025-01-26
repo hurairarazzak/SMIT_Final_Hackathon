@@ -13,18 +13,17 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Middleware
-app.use(cors("*"));
+app.use(cors({
+  origin: "https://smit-final-hackathon-kappa.vercel.app", // Frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+}));
 app.use(express.json());
 app.use(morgan("tiny"));
 
-
-// Auth Routes
+// Routes
 app.use("/api/v1/auth", authRoute);
-
-// Auth Routes
 app.use("/api/v1/user", userRoute);
-
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
