@@ -20,7 +20,7 @@ const Navbar = () => {
         backgroundColor: "#fff", // Ensures white background
       }}
     >
-      <img src={logo} alt="Saylani Logo" className="h-10 md:h-12" />
+      <img src={logo} alt="Saylani Logo Design" className="h-10 md:h-12" />
       <Menu
         mode="horizontal"
         theme="light"
