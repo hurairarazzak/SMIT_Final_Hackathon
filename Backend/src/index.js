@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import morgan from "morgan";
+// import morgan from "morgan";
 import authRoute from "./routes/auth.routes.js";  // Correct import for auth routes
 import userRoute from "./routes/user.routes.js";
 dotenv.config();
@@ -24,7 +24,7 @@ app.use("/api/v1/auth", authRoute); // Ensure /api/v1/auth is used for auth rout
 app.use("/api/v1/user", userRoute);
 
 // Error handling middleware (optional)
-app.use((err, req, res, next) => {
+app.use((err, _, res, __) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong!");
 });

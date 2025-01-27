@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Select, Input, Button, Typography, Alert, message, Modal, Form, Spin } from "antd";
+import { Card, Select, Input, Button, Typography, message, Modal, Form, Spin } from "antd";
 import axios from "axios";
 import { AppRoutes } from "../routes/routes";
 
@@ -158,8 +158,12 @@ export default function LoanCalculator() {
       }).then(() => {
         message.success("Form submitted successfully!");
         setLoading(false);
-      }).catch(() => {
-        message.error("User already requested before. Please try again later.");
+      }).catch((error) => {
+        if (error.response && error.response.status === 500) {
+          message.error("Internal Server Error. Please try again later.");
+        } else {
+          message.error("User already requested before. Please try again later.");
+        }
         setLoading(false);
       })
       

@@ -62,7 +62,7 @@ router.post("/register", async (req, res) => {
 });
 
 // Get all users route
-router.get("/all-users", async (req, res) => {
+router.get("/all-users", async (_, res) => {
   try {
     const users = await User.find();
     sendResponse(res, 200, users, false, "All users fetched successfully");
