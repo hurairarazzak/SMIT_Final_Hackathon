@@ -41,12 +41,12 @@ router.post("/send-email", async (req, res) => {
       ) => {
         try {
           const info = await transporter.sendMail({
-            from: `"${senderName}" <${process.env.MY_EMAIL}>`, // Use MY_EMAIL here
-            to: receiver,
-            subject: subject,
-            text: message,
-            html: message,
-        });        
+            from: `${senderName} 👻" <${sender}>`,
+            to: receiver, // list of receivers
+            subject: subject, // Subject line
+            text: message, // plain text body
+            html: message, // html body
+          });
           console.log("Message sent: %s", info.messageId);
         } catch (error) {
           console.log(error);
