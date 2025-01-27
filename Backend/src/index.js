@@ -5,29 +5,32 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import authRoute from "./routes/auth.routes.js";
 import userRoute from "./routes/user.routes.js";
-
-
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
 
-// Middleware
-app.use(cors({
-  origin: "https://smit-final-hackathon-kappa.vercel.app", // Frontend URL
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-}));
+// Enable CORS with specific options
+app.use(
+  cors({
+    origin: "https://smit-final-hackathon-kappa.vercel.app", // Your frontend URL
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
-app.use(morgan("tiny"));
-
-// Routes
-app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/user", userRoute);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+// Error handling middleware (optional)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something went wrong!");
 });
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
 
 mongoose
   .connect(process.env.MONGO_URI)
