@@ -32,12 +32,9 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("Database connected successfully.");
-  })
-  .catch((error) => {
-    console.error("Database connection error:", error.message);
-    process.exit(1); // Consider removing this if you want the server to attempt reconnecting
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => {
+    console.error("MongoDB connection error:", err);
+    process.exit(1); // Exit the process if connection fails
   });

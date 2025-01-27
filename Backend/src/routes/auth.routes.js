@@ -39,24 +39,43 @@ router.post("/login", async (req, res) => {
 // User register route
 router.post("/register", async (req, res) => {
   try {
+    console.log("Received registration request with body:", req.body);
+
+    // Validate user input
     const { error, value } = userSchema.validate(req.body);
-    if (error) return sendResponse(res, 400, null, true, error.message);
+    if (error) {
+      console.log("Validation error:", error.message);
+      return sendResponse(res, 400, null, true, error.message);
+    }
 
+    // Check if the user already exists
+    console.log("Checking if user with email already exists...");
     const user = await User.findOne({ email: value.email });
-    if (user) return sendResponse(res, 403, null, true, "User already registered with this email");
+    if (user) {
+      console.log(`User with email ${value.email} already exists.`);
+      return sendResponse(res, 409, null, true, "User already requested. Please try again later.");
+    }
 
+    // Hash the password
+    console.log("Hashing the password...");
     const hashedPassword = await bcrypt.hash(value.password, 12);
+    console.log("Password hashed successfully.");
+
+    // Save the new user
     value.password = hashedPassword;
+    console.log("Creating new user with data:", value);
 
     let newUser = new User({ ...value });
     newUser = await newUser.save();
-    sendResponse(res, 201, newUser, false, "User Register Successfully")
 
+    console.log("New user saved successfully:", newUser);
+    sendResponse(res, 201, newUser, false, "User Registered Successfully");
   } catch (error) {
-    console.error(error.message);
-    sendResponse(res, 500, null, true, error.message);
+    console.error("Error occurred during registration:", error.message);
+    sendResponse(res, 500, null, true, "Internal server error");
   }
 });
+
 
 // Get all users route
 router.get("/all-users", async (req, res) => {
@@ -141,7 +160,5 @@ router.post('/forgot-password', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
-
 
 export default router;
