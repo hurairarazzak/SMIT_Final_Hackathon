@@ -8,8 +8,6 @@ import { loginSchema, userSchema } from "../schemas/user.schema.js";
 
 const router = express.Router();
 
-
-
 // User login route
 router.post("/login", async (req, res) => {
   try {
@@ -36,30 +34,27 @@ router.post("/login", async (req, res) => {
 
 });
 
-// User register route
-// User register route
-router.post("/register", async (req, res) => {
+app.post('/api/v1/auth/register', async (req, res) => {
   try {
-    const { error, value } = userSchema.validate(req.body);
+    const { fullName, email, password, cnic } = req.body;
 
-    if (error) return sendResponse(res, 400, null, true, error.message);
+    // Check if user already exists
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
 
-    const user = await User.findOne({ email: value.email });
-    if (user) return sendResponse(res, 403, null, true, "User already registered with this email");
+    // Create new user
+    const newUser = new User({ fullName, email, password, cnic });
+    await newUser.save();
 
-    const hashedPassword = await bcrypt.hash(value.password, 12);
-    value.password = hashedPassword;
-
-    let newUser = new User({ ...value });
-    newUser = await newUser.save();
-    sendResponse(res, 201, newUser, false, "User Register Successfully")
-
+    res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
-    console.error(error.message);
-    sendResponse(res, 500, null, true, error.message);
+    console.error('Error:', error.message); // Log the error
+    res.status(500).json({ message: 'Internal Server Error' });
   }
-
 });
+
 
 // Get all users route
 router.get("/all-users", async (req, res) => {
