@@ -3,7 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import morgan from "morgan";
-import authRoute from "./routes/auth.routes.js";
+import authRoute from "./routes/auth.routes.js";  // Correct import for auth routes
 import userRoute from "./routes/user.routes.js";
 dotenv.config();
 
@@ -20,6 +20,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use("/api/v1/auth", authRoute); // Ensure /api/v1/auth is used for auth routes
 app.use("/api/v1/user", userRoute);
 
 // Error handling middleware (optional)
@@ -30,7 +31,6 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
 
 mongoose
   .connect(process.env.MONGO_URI)

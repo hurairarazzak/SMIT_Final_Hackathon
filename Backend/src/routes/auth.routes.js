@@ -37,10 +37,10 @@ router.post("/login", async (req, res) => {
 });
 
 // User register route
+// User register route
 router.post("/register", async (req, res) => {
   try {
     const { error, value } = userSchema.validate(req.body);
-
     if (error) return sendResponse(res, 400, null, true, error.message);
 
     const user = await User.findOne({ email: value.email });
@@ -57,9 +57,7 @@ router.post("/register", async (req, res) => {
     console.error(error.message);
     sendResponse(res, 500, null, true, error.message);
   }
-
 });
-
 
 // Get all users route
 router.get("/all-users", async (req, res) => {
