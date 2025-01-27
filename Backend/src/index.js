@@ -14,10 +14,11 @@ const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(cors({
-  origin: "https://smit-final-hackathon-kappa.vercel.app", // Frontend URL
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
+    origin: process.env.FRONTEND_URL, // Use .env variable
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
 }));
+
 app.use(express.json());
 app.use(morgan("tiny"));
 
