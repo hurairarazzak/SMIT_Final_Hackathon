@@ -1,29 +1,11 @@
 import express from "express";
-import cors from "cors";
 import sendResponse from "../helpers/sendResponse.js";
 import "dotenv/config";
 import User from "../models/User.model.js";
 import { authorizationUser } from "../middlewares/authorization.js";
 import nodemailer from "nodemailer";
 
-const app = express();
 const router = express.Router();
-
-// Enable CORS for all routes
-app.use(cors({
-  origin: "https://smit-final-hackathon-kappa.vercel.app", // Frontend origin
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-}));
-
-// Middleware to handle preflight requests
-router.options("/send-email", (req, res) => {
-  res.header("Access-Control-Allow-Origin", "https://smit-final-hackathon-kappa.vercel.app");
-  res.header("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.sendStatus(204); // No content
-});
 
 router.get("/get-my-info", authorizationUser, async (req, res) => {
   try {

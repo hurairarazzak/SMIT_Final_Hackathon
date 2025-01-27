@@ -34,25 +34,28 @@ router.post("/login", async (req, res) => {
 
 });
 
-app.post('/api/v1/auth/register', async (req, res) => {
+// User register route
+router.post("/register", async (req, res) => {
   try {
-    const { fullName, email, password, cnic } = req.body;
+    const { error, value } = userSchema.validate(req.body);
 
-    // Check if user already exists
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      return res.status(400).json({ message: 'User already exists' });
-    }
+    if (error) return sendResponse(res, 400, null, true, error.message);
 
-    // Create new user
-    const newUser = new User({ fullName, email, password, cnic });
-    await newUser.save();
+    const user = await User.findOne({ email: value.email });
+    if (user) return sendResponse(res, 403, null, true, "User already registered with this email");
 
-    res.status(201).json({ message: 'User registered successfully' });
+    const hashedPassword = await bcrypt.hash(value.password, 12);
+    value.password = hashedPassword;
+
+    let newUser = new User({ ...value });
+    newUser = await newUser.save();
+    sendResponse(res, 201, newUser, false, "User Register Successfully")
+
   } catch (error) {
-    console.error('Error:', error.message); // Log the error
-    res.status(500).json({ message: 'Internal Server Error' });
+    console.error(error.message);
+    sendResponse(res, 500, null, true, error.message);
   }
+
 });
 
 
