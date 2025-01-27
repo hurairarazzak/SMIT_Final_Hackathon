@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Select, Input, Button, Typography, message, Modal, Form, Spin } from "antd";
+import { Card, Select, Input, Button, Typography, Alert, message, Modal, Form, Spin } from "antd";
 import axios from "axios";
 import { AppRoutes } from "../routes/routes";
 
@@ -150,20 +150,16 @@ export default function LoanCalculator() {
             `,
       });
       console.log("Email sent:", res);
-      await axios.post(AppRoutes.register, {
+      const newUser = await axios.post(AppRoutes.register, {
           fullName: values.name,
           email: values.email,
           password: uniquePassword,
           cnic: values.cnic,
-      }).then(() => {
+      }).then((res) => {
         message.success("Form submitted successfully!");
         setLoading(false);
-      }).catch((error) => {
-        if (error.response && error.response.status === 500) {
-          message.error("Internal Server Error. Please try again later.");
-        } else {
-          message.error("User already requested before. Please try again later.");
-        }
+      }).catch((err) => {
+        message.error("User already requested before. Please try again later.");
         setLoading(false);
       })
       

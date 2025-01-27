@@ -50,7 +50,7 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(value.password, 12);
     value.password = hashedPassword;
 
-    let newUser = new User({ ...value, createdAt: new Date() });
+    let newUser = new User({ ...value });
     newUser = await newUser.save();
     sendResponse(res, 201, newUser, false, "User Register Successfully")
 
@@ -62,7 +62,7 @@ router.post("/register", async (req, res) => {
 });
 
 // Get all users route
-router.get("/all-users", async (_, res) => {
+router.get("/all-users", async (req, res) => {
   try {
     const users = await User.find();
     sendResponse(res, 200, users, false, "All users fetched successfully");

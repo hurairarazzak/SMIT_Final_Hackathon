@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema(
         validator: function (v) {
           return v != null && v.length >= 6; 
         },
-        message: "Password is required and must be at least 6 characters long!",
+        message: (props) => "Password is required and must be at least 8 characters long!",
       },
     },
     email: {

@@ -1,7 +1,6 @@
 import express from "express";
 import sendResponse from "../helpers/sendResponse.js";
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config";
 import User from "../models/User.model.js";
 import { authorizationUser } from "../middlewares/authorization.js";
 import nodemailer from "nodemailer";
