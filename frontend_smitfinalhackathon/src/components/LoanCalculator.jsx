@@ -150,15 +150,15 @@ export default function LoanCalculator() {
             `,
       });
       console.log("Email sent:", res);
-      const newUser = await axios.post(AppRoutes.register, {
+      await axios.post(AppRoutes.register, {
           fullName: values.name,
           email: values.email,
           password: uniquePassword,
           cnic: values.cnic,
-      }).then((res) => {
+      }).then(() => {
         message.success("Form submitted successfully!");
         setLoading(false);
-      }).catch((err) => {
+      }).catch(() => {
         message.error("User already requested before. Please try again later.");
         setLoading(false);
       })
