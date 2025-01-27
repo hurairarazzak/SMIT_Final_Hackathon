@@ -39,29 +39,21 @@ router.post("/login", async (req, res) => {
 // User register route
 router.post("/register", async (req, res) => {
   try {
-    console.log("Request body:", req.body); // Log the incoming request body
-
     const { error, value } = userSchema.validate(req.body);
-    if (error) {
-      console.log("Validation error:", error.message); // Log the validation error
-      return sendResponse(res, 400, null, true, error.message);
-    }
+    if (error) return sendResponse(res, 400, null, true, error.message);
 
     const user = await User.findOne({ email: value.email });
-    if (user) {
-      console.log("User already registered:", value.email); // Log if the user is already registered
-      return sendResponse(res, 403, null, true, "User already registered with this email");
-    }
+    if (user) return sendResponse(res, 403, null, true, "User already registered with this email");
 
     const hashedPassword = await bcrypt.hash(value.password, 12);
     value.password = hashedPassword;
 
     let newUser = new User({ ...value });
     newUser = await newUser.save();
-    sendResponse(res, 201, newUser, false, "User Register Successfully");
+    sendResponse(res, 201, newUser, false, "User Register Successfully")
 
   } catch (error) {
-    console.error("Error in registration:", error.message); // Log the actual error
+    console.error(error.message);
     sendResponse(res, 500, null, true, error.message);
   }
 });
