@@ -37,6 +37,7 @@ router.post("/login", async (req, res) => {
 });
 
 // User register route
+// User register route
 router.post("/register", async (req, res) => {
   try {
     const { error, value } = userSchema.validate(req.body);
@@ -59,7 +60,6 @@ router.post("/register", async (req, res) => {
   }
 
 });
-
 
 // Get all users route
 router.get("/all-users", async (req, res) => {
@@ -144,7 +144,5 @@ router.post('/forgot-password', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
-
 
 export default router;
