@@ -8,16 +8,13 @@ import userRoute from "./routes/user.routes.js";
 dotenv.config();
 
 const app = express();
+const corsOptions = {
+  origin: "https://smit-final-hackathon-kappa.vercel.app", // Frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed methods
+  credentials: true, // Allow cookies if necessary
+};
 
-// Enable CORS with specific options
-app.use(
-  cors({
-    origin: "https://smit-final-hackathon-kappa.vercel.app", // Your frontend URL
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use("/api/v1/auth", authRoute); // Ensure /api/v1/auth is used for auth routes
