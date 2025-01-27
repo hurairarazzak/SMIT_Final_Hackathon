@@ -8,6 +8,8 @@ import { loginSchema, userSchema } from "../schemas/user.schema.js";
 
 const router = express.Router();
 
+
+
 // User login route
 router.post("/login", async (req, res) => {
   try {
@@ -142,5 +144,7 @@ router.post('/forgot-password', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+
 
 export default router;
