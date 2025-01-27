@@ -35,26 +35,23 @@ router.post("/send-email", async (req, res) => {
       try {
         const info = await transporter.sendMail({
           from: `${senderName} 👻 <${sender}>`,
-          to: receiver, // list of receivers
-          subject: subject, // Subject line
-          text: message, // plain text body
-          html: message, // html body
+          to: receiver,
+          subject: subject,
+          text: message,
+          html: message,
         });
         console.log("Message sent: %s", info.messageId);
       } catch (error) {
-        console.error("Error sending email:", error);
-        throw new Error("Failed to send email.");
+        console.error(error);
       }
     };
 
     await sendEmail(senderName, sender, receiver, subject, message);
     res.status(200).json({ error: false, message: "Email sent successfully" });
-
   } catch (error) {
-    console.error("Error in email route:", error);
-    res.status(500).json({ error: true, message: "Failed to send email." });
+    console.error(error);
+    res.status(500).json({ error: true, message: "Internal server error" });
   }
 });
-
 
 export default router;
