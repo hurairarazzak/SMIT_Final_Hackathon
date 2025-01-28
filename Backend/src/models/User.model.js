@@ -13,13 +13,13 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      minlength: 6,
-      validate: {
-        validator: function (v) {
-          return v != null && v.length >= 6; 
-        },
-        message: (props) => "Password is required and must be at least 8 characters long!",
-      },
+      // minlength: 6,
+      // validate: {
+      //   validator: function (v) {
+      //     return v != null && v.length >= 6; 
+      //   },
+      //   message: (props) => "Password is required and must be at least 8 characters long!",
+      // },
     },
     email: {
       type: String,

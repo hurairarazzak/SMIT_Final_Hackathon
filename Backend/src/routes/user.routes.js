@@ -22,7 +22,8 @@ router.post("/send-email", async (req, res) => {
 
     try {
       const { senderName, sender, receiver, subject, message } = req.body;
-      // console.log("req body in backend send email", req.body)
+      console.log("req body in backend send email", req.body)
+console.log(process.env.MY_EMAIL, process.env.GMAIL_PASS);
 
       const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",

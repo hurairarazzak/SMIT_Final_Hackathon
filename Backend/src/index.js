@@ -12,14 +12,14 @@ const app = express();
 // Enable CORS with specific options
 app.use(
   cors({
-    origin: "https://smit-final-hackathon-kappa.vercel.app", // Your frontend URL
+    origin: ["https://smit-final-hackathon-kappa.vercel.app", "http://localhost:4000"], // Your frontend URL
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
 
-app.use(express.json());
+app.use(express.json({extended:true}));
 app.use("/api/v1/auth", authRoute); // Ensure /api/v1/auth is used for auth routes
 app.use("/api/v1/user", userRoute);
 
