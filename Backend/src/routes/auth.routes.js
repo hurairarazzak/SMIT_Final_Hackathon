@@ -39,19 +39,19 @@ router.post("/login", async (req, res) => {
 // User register route
 router.post("/register", async (req, res) => {
   try {
-    const { email } = (req.body);
-    console.log(req.body);
-    
-    // if (error) return sendResponse(res, 400, null, true, error.message);
+    const { error, value } = userSchema.validate(req.body);
 
-    const user = await User.findOne({ email });
+    if (error) return sendResponse(res, 400, null, true, error.message);
+
+    const user = await User.findOne({ email: value.email });
     if (user) return sendResponse(res, 403, null, true, "User already registered with this email");
 
-    const hashedPassword = await bcrypt.hash(req.body.password, 12);
+    const hashedPassword = await bcrypt.hash(value.password, 12);
+    value.password = hashedPassword;
 
-    // let newUser = new User({ ...value });
-    let newUser = await User.create({...req.body, password: hashedPassword});
-    sendResponse(res, 201, newUser, "User Register Successfully");
+    let newUser = new User({ ...value });
+    newUser = await newUser.save();
+    sendResponse(res, 201, newUser, false, "User Register Successfully")
 
   } catch (error) {
     console.error(error.message);
