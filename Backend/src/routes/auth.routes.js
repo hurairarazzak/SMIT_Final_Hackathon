@@ -8,25 +8,26 @@ import { loginSchema, userSchema } from "../schemas/user.schema.js";
 
 const router = express.Router();
 
-
-
 // User login route
 router.post("/login", async (req, res) => {
   try {
+    const { email, password } = (req.body);
+    console.log(req.body);
+    
+    // if (error) return sendResponse(res, 400, null, true, error.message);
 
-    const { error, value } = loginSchema.validate(req.body);
-    if (error) return sendResponse(res, 400, null, true, error.message);
-
-    const user = await User.findOne({ email: value.email }).lean();
-    // console.log("Currnet user=>", user)
+    const user = await User.findOne({ email });
+    console.log("Currnet user=>", user)
 
     if (!user) return sendResponse(res, 403, null, true, "User is not registered with this email.");
 
-    const isPasswordValid = await bcrypt.compare(value.password, user.password);
+    const isPasswordValid = bcrypt.compare(password, user.password);
     if (!isPasswordValid) return sendResponse(res, 403, null, true, "Invalid Credentials");
-    let token = jwt.sign(user, process.env.AUTH_SECRET)
 
-    // console.log("token=> ", token)
+    let token = jwt.sign({ ...user._doc }, process.env.AUTH_SECRET, {
+      expiresIn: "1d",
+    });
+    console.log("token=> ", token)
     sendResponse(res, 200, { user, token }, false, "User login Successfully")
 
   } catch (error) {
@@ -39,19 +40,19 @@ router.post("/login", async (req, res) => {
 // User register route
 router.post("/register", async (req, res) => {
   try {
-    const { error, value } = userSchema.validate(req.body);
+    const { email } = (req.body);
+    console.log(req.body);
+    
+    // if (error) return sendResponse(res, 400, null, true, error.message);
 
-    if (error) return sendResponse(res, 400, null, true, error.message);
-
-    const user = await User.findOne({ email: value.email });
+    const user = await User.findOne({ email });
     if (user) return sendResponse(res, 403, null, true, "User already registered with this email");
 
-    const hashedPassword = await bcrypt.hash(value.password, 12);
-    value.password = hashedPassword;
+    const hashedPassword = await bcrypt.hash(req.body.password, 12);
 
-    let newUser = new User({ ...value });
-    newUser = await newUser.save();
-    sendResponse(res, 201, newUser, false, "User Register Successfully")
+    // let newUser = new User({ ...value });
+    let newUser = await User.create({...req.body, password: hashedPassword});
+    sendResponse(res, 201, newUser, "User Register Successfully");
 
   } catch (error) {
     console.error(error.message);

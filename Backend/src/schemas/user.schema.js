@@ -16,7 +16,7 @@ export const userSchema = Joi.object({
   mobileNo: Joi.string().regex(/^(03)[0-9]{9}$/).messages({
     'string.pattern.base': 'Invalid phone number format. Must start with 03 and have 11 digits',
   }),
-  cnic: Joi.string().regex(/^[0-9]{5}-[0-9]{7}-[0-9]{1}$/).required().messages({
+  cnic: Joi.string().regex(/^[0-9]{5}[0-9]{7}[0-9]{1}$/).required().messages({
     'string.pattern.base': 'Invalid CNIC format (e.g., 12345-1234567-1)',
   }),
   address: Joi.string().trim().allow(''), // Allow empty string for optional fields
