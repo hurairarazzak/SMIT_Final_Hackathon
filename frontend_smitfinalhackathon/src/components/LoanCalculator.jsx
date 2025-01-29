@@ -12,10 +12,12 @@ import {
   Spin,
 } from "antd";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom'
 import { AppRoutes } from "../routes/routes";
 
 const { Title, Paragraph } = Typography;
 const { Option } = Select;
+const navigate = useNavigate();
 
 const loanCategories = {
   "Wedding Loans": {
@@ -195,8 +197,17 @@ export default function LoanCalculator() {
           cnic: values.cnic,
         })
         .then((res) => {
-          message.success("Form submitted successfully!");
+          message.success(
+            "Form submitted successfully, Check your email for login details!"
+          );
+          setCategory("");
+          setSubcategory("");
+          setInitialAmount("");
+          setDepositAmount("");
+          setLoanPeriod("");
+          setLoanBreakdown(null);
           setLoading(false);
+          navigate("/login");
         })
         .catch((err) => {
           message.error(
@@ -212,7 +223,7 @@ export default function LoanCalculator() {
       if (error.name === "ValidationError") {
         message.error("Please fill in all fields correctly.");
       } else {
-        console.error("Failed to submit form:", error);
+        // console.error("Failed to submit form:", error);
         message.error("Failed to submit form. Please try again later.");
       }
     }
@@ -220,47 +231,53 @@ export default function LoanCalculator() {
 
   return (
     <>
-    <Card
-  style={{
-    maxWidth: 700,
-    margin: "30px auto",
-    padding: "20px", // Reduced padding here
-    borderRadius: "20px",
-    boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.15)",
-    background: "linear-gradient(135deg, #00b09b, #96c93d)",
-    color: "#ffffff",
-    textAlign: "center",
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "90vh",
-    boxSizing: "border-box",
-  }}
-  onMouseEnter={(e) => {
-    e.currentTarget.style.transform = "scale(1.03)";
-    e.currentTarget.style.boxShadow = "0px 15px 30px rgba(0, 0, 0, 0.2)";
-  }}
-  onMouseLeave={(e) => {
-    e.currentTarget.style.transform = "scale(1)";
-    e.currentTarget.style.boxShadow = "0px 10px 25px rgba(0, 0, 0, 0.15)";
-  }}
->
-  <div
-    style={{
-      padding: "1px 20px", // Reduced padding here
-      margin: "15px 0", // Reduced margin here
-      borderRadius: "12px",
-      background: "rgba(255, 255, 255, 0.2)",
-      boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.1)",
-    }}
-  >
-    <h1 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "10px" }}>
-      Saylani Microfinance App <br />
-      Loan Calculator
-    </h1>
-  </div>
+      <Card
+        style={{
+          maxWidth: 700,
+          margin: "30px auto",
+          padding: "20px", // Reduced padding here
+          borderRadius: "20px",
+          boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.15)",
+          background: "linear-gradient(135deg, #00b09b, #96c93d)",
+          color: "#ffffff",
+          textAlign: "center",
+          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "90vh",
+          boxSizing: "border-box",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.03)";
+          e.currentTarget.style.boxShadow = "0px 15px 30px rgba(0, 0, 0, 0.2)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "scale(1)";
+          e.currentTarget.style.boxShadow = "0px 10px 25px rgba(0, 0, 0, 0.15)";
+        }}
+      >
+        <div
+          style={{
+            padding: "1px 20px", // Reduced padding here
+            margin: "15px 0", // Reduced margin here
+            borderRadius: "12px",
+            background: "rgba(255, 255, 255, 0.2)",
+            boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <h1
+            style={{
+              fontSize: "24px",
+              fontWeight: "700",
+              marginBottom: "10px",
+            }}
+          >
+            Saylani Microfinance App <br />
+            Loan Calculator
+          </h1>
+        </div>
         <Select
           placeholder="Select Category"
           onChange={handleCategoryChange}
@@ -342,7 +359,10 @@ export default function LoanCalculator() {
             label="CNIC"
             name="cnic"
             rules={[
-              { required: true, message: "Please enter your CNIC (without dashes)." },
+              {
+                required: true,
+                message: "Please enter your CNIC (without dashes).",
+              },
               {
                 pattern: /^\d{5}\d{7}\d{1}$/,
                 message: "Please enter a valid CNIC.",
