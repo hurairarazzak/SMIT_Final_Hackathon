@@ -6,27 +6,34 @@ import User from "../models/User.model.js";
 export async function authorizationUser(req, res, next) {
   try {
     const bearerToken = req?.headers?.authorization;
-    const token = bearerToken?.split(" ")[1];
-    console.log("token=>", token);
+    const token = bearerToken?.split(" ")[1]; // Extract token from Authorization header
+    console.log("Token received:", token); // Log the token for debugging
+    
     if (!token) return sendResponse(res, 403, null, true, "Token not provided");
-    const decoded = jwt.verify(token, process.env.AUTH_SECRET);   
+
+    // Decode the token using the secret from .env
+    const decoded = jwt.verify(token, process.env.AUTH_SECRET); 
     if (decoded) {
-      const user = await User.findById(decoded._id).lean();    
+      // Find the user based on the decoded token
+      const user = await User.findById(decoded._id).lean(); 
       if (!user) {
         return sendResponse(res, 403, null, true, "User not found");
       }
-      
-      console.log("decoded:", decoded)
 
+      console.log("Decoded user:", decoded); // Log the decoded user data
+
+      // Attach the decoded user data to the request object for further use
       req.user = decoded;
-      next();
+      next(); // Proceed to the next middleware or route handler
     } else {
-      sendResponse(res, 500, null, true, "Decoded not available");
+      return sendResponse(res, 403, null, true, "Token is invalid");
     }
   } catch (error) {
-    sendResponse(res, 500, null, true, "Somthing went wrong");
+    console.error("Error in authorizationUser:", error.message);
+    sendResponse(res, 500, null, true, "Internal server error");
   }
 }
+
 
 export async function authorizationStudent(req, res, next) {
   try {

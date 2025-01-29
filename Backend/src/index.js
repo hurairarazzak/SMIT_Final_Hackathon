@@ -12,7 +12,7 @@ const app = express();
 // Enable CORS with specific options
 app.use(
   cors({
-    origin: ["https://smit-final-hackathon-kappa.vercel.app", "http://localhost:4000"], // Your frontend URL
+    origin: ["https://smit-final-hackathon-kappa.vercel.app"], // Your frontend URL
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
