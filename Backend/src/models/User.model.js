@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema(
       unique: true, // Change it later to true
       validate: {
         validator: function (v) {
-          return /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/.test(v);
+          return /^[0-9]{5}[0-9]{7}[0-9]{1}$/.test(v);
         },
         message: (props) => `${props.value} is not a valid CNIC!`,
       },

@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 
 // Enable CORS with specific options
-app.use(cors({ origin: "https://smit-final-hackathon-kappa.vercel.app" }));
+app.use(cors({ origin: "*" }));
 
 app.use(express.json({extended:true}));
 app.use("/api/v1/auth", authRoute); // Ensure /api/v1/auth is used for auth routes
