@@ -18,8 +18,8 @@ export default function AuthContextProvider({ children }) {
         getUser();
       } 
 
-    //   if(user && user.role == "admin") navigate("/admin-dashboard");
-    //   if(user && user.role == "user") navigate("/user-dashboard");
+      if(user && user.role == "admin") navigate("/admin-dashboard");
+      if(user && user.role == "user") navigate("/user-dashboard");
     }
   }, [user]);
 

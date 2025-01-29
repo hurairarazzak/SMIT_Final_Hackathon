@@ -297,7 +297,7 @@ export default function LoanCalculator() {
 
         <Input
           type="number"
-          placeholder="Enter deposit amount"
+          placeholder="Enter Deposit amount"
           value={depositAmount}
           onChange={(e) => setDepositAmount(e.target.value)}
           style={{ marginBottom: 20 }}

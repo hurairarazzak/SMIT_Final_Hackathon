@@ -53,7 +53,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-500">
+    <div className="min-h-screen flex items-center justify-center">
       <Card
         className="w-full max-w-md shadow-lg rounded-xl"
         style={{ padding: "2rem", backgroundColor: "#fff" }}

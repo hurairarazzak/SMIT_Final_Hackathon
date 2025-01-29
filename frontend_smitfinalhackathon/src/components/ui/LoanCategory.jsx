@@ -30,9 +30,9 @@ const LoanCategories = () => {
   ];
 
   return (
-    <section className="py-12 bg-gradient-to-r text-black">
+    <section className="py-12 bg-gradient-to-r text-black container px-5 pt-20 mx-auto">
       <div className='container mx-auto flex items-center justify-between mb-10'>
-        <div className='text-4xl font-bold tracking-tight'>
+        <div className='text-3xl font-bold tracking-tight'>
           Loan Categories
         </div>
         <div>

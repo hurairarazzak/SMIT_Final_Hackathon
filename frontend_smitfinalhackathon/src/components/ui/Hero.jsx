@@ -1,26 +1,27 @@
-import React from 'react';
-import LoanCategories from './LoanCategory';
+import React from "react";
 
-
-const Hero = () => {
-    return (
-        <section className="text-gray-600 body-font min-h-screen">
-            <div className="container px-5 py-24 mx-auto">
-                <div className="flex flex-col text-center w-full mb-20">
-                    <h2 className="text-xs text-indigo-500 tracking-widest font-medium title-font mb-1">
-                        SAYLANI WELFARE TRUST
-                    </h2>
-                    <h1 className="sm:text-3xl text-5xl font-medium title-font mb-4 text-gray-900">
-                        Microfinance Bank
-                    </h1>
-                    <p className="lg:w-2/3 mx-auto leading-relaxed text-base">
-                        Saylani Welfare Trust's Microfinance Bank offers interest-free loans through the <strong>Qarze Hasana program</strong>. This program provides financial assistance to individuals and families in need, enabling them to start or grow small businesses, meet emergency expenses, and improve their livelihoods.
-                    </p>
-                </div>
-                <LoanCategories />
+const SimpleCarousel = () => {
+  return (
+    <section className="w-full">
+        <div className="relative">
+          <img 
+            src="https://i.ytimg.com/vi/75HFXU2yG5Y/maxresdefault.jpg"
+            alt="Slide 1"
+            className="w-full h-120 opacity-500"
+          />
+          <div className="absolute inset-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
+            <div className="max-w-3xl">
+              <h2 className="text-indigo-400 tracking-widest font-bold text-lg">SAYLANI WELFARE TRUST</h2>
+              <h1 className="text-white text-5xl font-bold my-4">Microfinance Bank</h1>
+              <p className="text-white text-lg">
+                Saylani Welfare Trust's Microfinance Bank offers <strong>interest-free loans</strong> through the{" "}
+                <span className="text-white font-semibold">Qarze Hasana program</span>, empowering individuals to start small businesses, cover emergencies, and enhance their livelihoods.
+              </p>
             </div>
-        </section>
-    );
+          </div>
+        </div>
+    </section>
+  );
 };
 
-export default Hero;
+export default SimpleCarousel;
