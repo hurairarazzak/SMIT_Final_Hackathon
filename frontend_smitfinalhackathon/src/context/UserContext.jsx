@@ -2,43 +2,39 @@ import { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { AppRoutes } from "../routes/routes";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 
 export const AuthContext = createContext();
 
 export default function AuthContextProvider({ children }) {
-  const [user, setUser] = useState(null); // Initialize user as null for better state handling
-  const navigate = useNavigate();
+  const [user, setUser] = useState();
+//   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = Cookies.get("token");
-    if (token) {
-      getUser(token); // If token exists, fetch user data
-    }
+    if (!user) {
+      const token = Cookies.get("token");
+      
+      if (token) {
+        getUser();
+      } 
 
-    // Redirect based on user role after data is fetched
-    if (user) {
-      if (user.role === "admin") navigate("/admin-dashboard");
-      if (user.role === "user") navigate("/user-dashboard");
+    //   if(user && user.role == "admin") navigate("/admin-dashboard");
+    //   if(user && user.role == "user") navigate("/user-dashboard");
     }
   }, [user]);
 
-  // Function to fetch user data
-  const getUser = (token) => {
+  const getUser = () => {
     axios
       .get(AppRoutes.getMyInfo, {
         headers: {
-          Authorization: `Bearer ${token}`, // Send the token as Bearer in the header
+          Authorization: `Bearer ${Cookies.get("token")}`,
         },
       })
       .then((res) => {
         console.log("response from get my info API=>", res.data);
-        setUser(res.data.data); // Update the user state with response data
+        setUser(res?.data?.data);
       })
-      .catch((err) => {
-        console.log("Error fetching user:", err);
-        setUser(null); // Reset user state in case of error
-      });
+      .catch((err) => console.log(err));
   };
 
   return (
