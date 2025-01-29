@@ -24,39 +24,47 @@ const LoanCategories = () => {
     {
       title: "Education Loans",
       subcategories: ["University Fees", "Child Fees Loan"],
-      maxLoan: "Based on Requirement",
+      maxLoan: "On Requirements",
       loanPeriod: "4 years",
     },
   ];
 
   return (
-    <section>
-      <div className='flex items-center justify-between my-5'>
-        <div className='text-3xl font-bold'>Loan Categories</div>
+    <section className="py-12 bg-gradient-to-r text-black">
+      <div className='container mx-auto flex items-center justify-between mb-10'>
+        <div className='text-4xl font-bold tracking-tight'>
+          Loan Categories
+        </div>
         <div>
-          <Button type="default" size='large' href='/loan-calculator'>Apply for Loan</Button>
+          <Button
+            type="primary"
+            size="large"
+            href='/loan-calculator'
+          >
+            Apply for Loan
+          </Button>
         </div>
       </div>
     
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {loanCategories.map((category, index) => (
           <div
             key={index}
-            className="bg-white rounded-lg shadow-md p-6 transition-transform transform hover:scale-105 hover:shadow-lg"
+            className="bg-white rounded-2xl shadow-lg p-8 transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-gray-900"
           >
-            <h3 className="text-lg font-semibold mb-2">{category.title}</h3>
-            <ul className="list-disc list-inside text-sm">
+            <h3 className="text-lg font-semibold mb-4 text-indigo-800">{category.title}</h3>
+            <ul className="list-disc list-inside text-base text-gray-700 mb-4">
               {category.subcategories.map((subcategory) => (
                 <li key={subcategory}>{subcategory}</li>
               ))}
             </ul>
-            <div className="flex justify-between mt-4">
-              <span className="text-sm font-semibold">Max Loan:</span>
-              <span className="text-sm">{category.maxLoan}</span>
+            <div className="flex justify-between text-base mt-4">
+              <span>Max Loan:</span>
+              <span>{category.maxLoan}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-sm font-semibold">Loan Period:</span>
-              <span className="text-sm">{category.loanPeriod}</span>
+            <div className="flex justify-between text-base">
+              <span>Loan Period:</span>
+              <span>{category.loanPeriod}</span>
             </div>
           </div>
         ))}

@@ -1,5 +1,16 @@
 import { useState } from "react";
-import { Card, Select, Input, Button, Typography, Alert, message, Modal, Form, Spin } from "antd";
+import {
+  Card,
+  Select,
+  Input,
+  Button,
+  Typography,
+  Alert,
+  message,
+  Modal,
+  Form,
+  Spin,
+} from "antd";
 import axios from "axios";
 import { AppRoutes } from "../routes/routes";
 
@@ -18,7 +29,12 @@ const loanCategories = {
     period: 5,
   },
   "Business Startup Loans": {
-    subcategories: ["Buy Stall", "Advance Rent for Shop", "Shop Assets", "Shop Machinery"],
+    subcategories: [
+      "Buy Stall",
+      "Advance Rent for Shop",
+      "Shop Assets",
+      "Shop Machinery",
+    ],
     maxLoan: 1000000,
     period: 5,
   },
@@ -40,13 +56,11 @@ export default function LoanCalculator() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
 
-
   const handleCategoryChange = (value) => {
     setCategory(value);
     setSubcategory("");
     setLoanPeriod(loanCategories[value]?.period || "");
   };
-
 
   const calculateLoan = () => {
     if (!category || !subcategory || !initialAmount || !depositAmount) {
@@ -55,7 +69,8 @@ export default function LoanCalculator() {
     }
 
     const maxLoan = loanCategories[category].maxLoan;
-    const requestedAmount = parseFloat(initialAmount) - parseFloat(depositAmount);
+    const requestedAmount =
+      parseFloat(initialAmount) - parseFloat(depositAmount);
 
     if (maxLoan !== "Based on requirement" && requestedAmount > maxLoan) {
       message.error(`Maximum loan allowed is PKR ${maxLoan}`);
@@ -96,78 +111,105 @@ export default function LoanCalculator() {
         subject: "Your Account Password",
         message: `
               <html>
-                <head>
-                  <style>
-                    body {
-                      font-family: Arial, sans-serif;
-                      background-color: #f4f4f9;
-                      margin: 0;
-                      padding: 0;
-                    }
-                    .container {
-                      max-width: 600px;
-                      margin: 0 auto;
-                      padding: 20px;
-                      background-color: #ffffff;
-                      border-radius: 10px;
-                      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                    }
-                    h1 {
-                      color: #333;
-                      text-align: center;
-                    }
-                    p {
-                      color: #555;
-                      line-height: 1.6;
-                      font-size: 16px;
-                    }
-                    .highlight {
-                      color: #0066cc;
-                      font-weight: bold;
-                    }
-                    .footer {
-                      text-align: center;
-                      font-size: 14px;
-                      color: #888;
-                      margin-top: 30px;
-                    }
-                  </style>
-                </head>
-                <body>
-                  <div class="container">
-                    <h1>Your Account Password</h1>
-                    <p>Hello <strong class="highlight">${values.name}</strong>,</p>
-                    <p>Thank you for registering with us!</p>
-                    <p>Your account password is: <strong class="highlight">${uniquePassword}</strong></p>
-                    <p>Please keep this information secure and do not share it with anyone.</p>
-                    <div class="footer">
-                      <p>Best regards,</p>
-                      <p><strong>Your Support Team</strong></p>
-                    </div>
-                  </div>
-                </body>
-              </html>
-            `,
+<head>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      margin: 0;
+      padding: 0;
+      color: #ffffff;
+    }
+    .container {
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      color: #333;
+    }
+    h1 {
+      font-size: 28px;
+      text-align: center;
+      margin-bottom: 15px;
+      color: #4a00e0;
+    }
+    p {
+      line-height: 1.8;
+      font-size: 16px;
+      margin: 10px 0;
+    }
+    .highlight {
+      color: #e63946;
+      font-weight: 600;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #4a00e0;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(74, 0, 224, 0.5);
+    }
+    .btn:hover {
+      background: #3700b3;
+      box-shadow: 0 6px 15px rgba(74, 0, 224, 0.6);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to Our Platform!</h1>
+    <p>Hello, <span class="highlight">${values.name}</span>,</p>
+    <p>We're thrilled to have you on board. Here is your account password:</p>
+    <p style="font-size: 18px; text-align: center; background: #f9f9f9; padding: 10px; border-radius: 8px; font-weight: bold;">
+      ${uniquePassword}
+    </p>
+    <p>Make sure to keep your password private and secure.</p>
+    <div class="footer">
+      <p>Need help? Reach out to our <strong>Support Team</strong>.</p>
+      <p>&copy; 2025 Saylani Microfinance. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>
+           `,
       });
       console.log("Email sent:", res);
-      const newUser = await axios.post(AppRoutes.register, {
+      const newUser = await axios
+        .post(AppRoutes.register, {
           fullName: values.name,
           email: values.email,
           password: uniquePassword,
           cnic: values.cnic,
-      }).then((res) => {
-        message.success("Form submitted successfully!");
-        setLoading(false);
-      }).catch((err) => {
-        message.error("User already requested before. Please try again later.");
-        setLoading(false);
-      })
-      
+        })
+        .then((res) => {
+          message.success("Form submitted successfully!");
+          setLoading(false);
+        })
+        .catch((err) => {
+          message.error(
+            "User already requested before. Please try again later."
+          );
+          setLoading(false);
+        });
+
       setLoading(false);
       setIsModalVisible(false);
       form.resetFields(); // Clear form after submission
     } catch (error) {
-      if (error.name === 'ValidationError') {
+      if (error.name === "ValidationError") {
         message.error("Please fill in all fields correctly.");
       } else {
         console.error("Failed to submit form:", error);
@@ -176,21 +218,71 @@ export default function LoanCalculator() {
     }
   };
 
-
   return (
     <>
-      <Card style={{ maxWidth: 500, margin: "50px auto", padding: 20, boxShadow: "0px 2px 5px rgba(0,0,0,0.1)" }}>
-        <Title level={3}>Loan Calculator</Title>
-        <Select placeholder="Select Category" onChange={handleCategoryChange} style={{ width: "100%", marginBottom: 20 }}>
+    <Card
+  style={{
+    maxWidth: 700,
+    margin: "30px auto",
+    padding: "20px", // Reduced padding here
+    borderRadius: "20px",
+    boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.15)",
+    background: "linear-gradient(135deg, #00b09b, #96c93d)",
+    color: "#ffffff",
+    textAlign: "center",
+    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "90vh",
+    boxSizing: "border-box",
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "scale(1.03)";
+    e.currentTarget.style.boxShadow = "0px 15px 30px rgba(0, 0, 0, 0.2)";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "scale(1)";
+    e.currentTarget.style.boxShadow = "0px 10px 25px rgba(0, 0, 0, 0.15)";
+  }}
+>
+  <div
+    style={{
+      padding: "1px 20px", // Reduced padding here
+      margin: "15px 0", // Reduced margin here
+      borderRadius: "12px",
+      background: "rgba(255, 255, 255, 0.2)",
+      boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.1)",
+    }}
+  >
+    <h1 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "10px" }}>
+      Saylani Microfinance App <br />
+      Loan Calculator
+    </h1>
+  </div>
+        <Select
+          placeholder="Select Category"
+          onChange={handleCategoryChange}
+          style={{ width: "100%", marginBottom: 20 }}
+        >
           {Object.keys(loanCategories).map((cat) => (
-            <Option key={cat} value={cat}>{cat}</Option>
+            <Option key={cat} value={cat}>
+              {cat}
+            </Option>
           ))}
         </Select>
 
         {category && (
-          <Select placeholder="Select Subcategory" onChange={setSubcategory} style={{ width: "100%", marginBottom: 20 }}>
+          <Select
+            placeholder="Select Subcategory"
+            onChange={setSubcategory}
+            style={{ width: "100%", marginBottom: 20 }}
+          >
             {loanCategories[category].subcategories.map((sub) => (
-              <Option key={sub} value={sub}>{sub}</Option>
+              <Option key={sub} value={sub}>
+                {sub}
+              </Option>
             ))}
           </Select>
         )}
@@ -213,27 +305,48 @@ export default function LoanCalculator() {
 
         {loanPeriod && <Paragraph>Loan Period: {loanPeriod} years</Paragraph>}
 
-        <Button block onClick={calculateLoan} style={{ width: "100%" }}>Calculate</Button>
+        <Button block onClick={calculateLoan} style={{ width: "100%" }}>
+          Calculate
+        </Button>
 
         {loanBreakdown && (
           <>
             <div style={{ marginTop: 20 }}>
-              <Paragraph>Total Payable: PKR {loanBreakdown.totalPayable.toFixed(2)}</Paragraph>
-              <Paragraph>Monthly Installment: PKR {loanBreakdown.monthlyInstallment.toFixed(2)}</Paragraph>
+              <Paragraph>
+                Total Payable: PKR {loanBreakdown.totalPayable.toFixed(2)}
+              </Paragraph>
+              <Paragraph>
+                Monthly Installment: PKR{" "}
+                {loanBreakdown.monthlyInstallment.toFixed(2)}
+              </Paragraph>
             </div>
-            <Button style={{ width: "100%" }} type="primary" onClick={() => setIsModalVisible(true)}>Proceed</Button>
+            <Button
+              style={{ width: "100%" }}
+              type="primary"
+              onClick={() => setIsModalVisible(true)}
+            >
+              Proceed
+            </Button>
           </>
         )}
       </Card>
 
-      <Modal title="Enter Your Details" open={isModalVisible} onCancel={() => setIsModalVisible(false)} footer={null}>
+      <Modal
+        title="Enter Your Details"
+        open={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        footer={null}
+      >
         <Form layout="vertical" form={form}>
           <Form.Item
             label="CNIC"
             name="cnic"
             rules={[
-              { required: true, message: "Please enter your CNIC" },
-              { pattern: /^\d{5}-\d{7}-\d{1}$/, message: "Invalid CNIC format. Use XXXXX-XXXXXXX-X" },
+              { required: true, message: "Please enter your CNIC (without dashes)." },
+              {
+                pattern: /^\d{5}\d{7}\d{1}$/,
+                message: "Please enter a valid CNIC.",
+              },
             ]}
           >
             <Input placeholder="Enter your CNIC" />
@@ -242,7 +355,11 @@ export default function LoanCalculator() {
             label="Email"
             name="email"
             rules={[
-              { required: true, type: 'email', message: "Please enter a valid email" },
+              {
+                required: true,
+                type: "email",
+                message: "Please enter a valid email",
+              },
             ]}
           >
             <Input placeholder="Enter your Email" />
@@ -252,16 +369,25 @@ export default function LoanCalculator() {
             name="name"
             rules={[
               { required: true, message: "Please enter your Name" },
-              { pattern: /^[a-zA-Z\s]+$/, message: "Name should only contain letters and spaces" },
+              {
+                pattern: /^[a-zA-Z\s]+$/,
+                message: "Name should only contain letters and spaces",
+              },
             ]}
           >
             <Input placeholder="Enter your Name" />
           </Form.Item>
-          <Button type="primary" htmlType="submit" onClick={handleSubmit} disabled={loading} style={{ width: "100%" }}>{loading ? <Spin /> : "Submit" }</Button>
+          <Button
+            type="primary"
+            htmlType="submit"
+            onClick={handleSubmit}
+            disabled={loading}
+            style={{ width: "100%" }}
+          >
+            {loading ? <Spin /> : "Submit"}
+          </Button>
         </Form>
       </Modal>
     </>
-
-
   );
 }

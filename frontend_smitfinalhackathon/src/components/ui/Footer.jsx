@@ -74,7 +74,7 @@ const Footer = () => {
       © Copyright 2025 Saylani Welfare Microfinance Bank - All Rights Reserved.
     </p>
     <p className="py-5 text-sm text-right text-gray-500 w-full sm:w-auto">
-      Developed by Engr. Muhammad Adnan
+      Developed by Huraira Razzak
     </p>
   </div>
 </div>

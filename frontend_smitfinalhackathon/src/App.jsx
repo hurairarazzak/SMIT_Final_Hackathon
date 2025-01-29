@@ -9,6 +9,8 @@ import Dashboard from './pages/adminDashboard/Dashboard'
 import { useContext } from 'react';
 import { AuthContext } from './context/UserContext';
 import UserDashboard from './pages/userDashboard/Dashboard';
+import Navbar from './components/ui/Navbar';
+import Footer from './components/ui/Footer';
 
 function App() {
   
@@ -17,6 +19,7 @@ function App() {
   
   return (
    <BrowserRouter>
+   <Navbar />
     <Routes>
       <Route path='/' element={<Home />}></Route>
       <Route path='/loan-calculator' element={<LoanCalculator />} />
@@ -40,6 +43,7 @@ function App() {
       </Route>
 
     </Routes>
+    <Footer />
    </BrowserRouter>
   )
 }
