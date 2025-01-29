@@ -39,13 +39,13 @@ router.post("/login", async (req, res) => {
 // User register route
 router.post("/register", async (req, res) => {
   try {
-    // const { error, value } = (req.body);
+    const { email } = (req.body);
     console.log(req.body);
     
     // if (error) return sendResponse(res, 400, null, true, error.message);
 
-    // const user = await User.findOne({ email: value.email });
-    // if (user) return sendResponse(res, 403, null, true, "User already registered with this email");
+    const user = await User.findOne({ email });
+    if (user) return sendResponse(res, 403, null, true, "User already registered with this email");
 
     const hashedPassword = await bcrypt.hash(req.body.password, 12);
 
