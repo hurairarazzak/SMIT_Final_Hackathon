@@ -33,11 +33,11 @@ const UserProfile = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
       });
-      console.log("User data=>", response.data.data);
+      // console.log("User data=>", response.data.data);
       setUserData(response.data.data);
       form.setFieldsValue(response.data.data);  // Set form values from the fetched user data
     } catch (error) {
-      console.error("Failed to fetch user data:", error);
+      // console.error("Failed to fetch user data:", error);
       message.error("Failed to load user data.");
     } finally {
       setLoading(false);

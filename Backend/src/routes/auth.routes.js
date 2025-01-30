@@ -51,7 +51,7 @@ router.post("/register", async (req, res) => {
     value.password = hashedPassword;
 
     if (!value.imageUrl) {
-      value.imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFCzxivJXCZk0Kk8HsHujTO3Olx0ngytPrWw&s"; 
+      value.imageUrl = "https://e7.pngegg.com/pngimages/636/141/png-clipart-computer-icons-user-s-included-miscellaneous-user-profile.png"; 
     }
 
     let newUser = new User({ ...value });
