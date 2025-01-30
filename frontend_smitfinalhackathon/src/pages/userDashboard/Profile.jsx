@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext ,useState, useEffect } from "react";
 import {
   Card,
   Form,
@@ -11,6 +11,7 @@ import {
   Upload,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import { AuthContext } from "../../context/UserContext";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { AppRoutes } from "../../routes/routes";
