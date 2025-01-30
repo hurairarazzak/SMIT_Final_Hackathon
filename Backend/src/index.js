@@ -16,12 +16,6 @@ app.use(express.json({extended:true}));
 app.use("/api/v1/auth", authRoute); // Ensure /api/v1/auth is used for auth routes
 app.use("/api/v1/user", userRoute);
 
-// Error handling middleware (optional)
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something went wrong!");
-});
-
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
