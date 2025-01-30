@@ -40,23 +40,23 @@ router.post("/login", async (req, res) => {
 // User register route
 router.post("/register", async (req, res) => {
   try {
-    const { error, value } = userSchema.validate(req.body);
+    const { email } = (req.body);
+    console.log(req.body);
+    
+    // if (error) return sendResponse(res, 400, null, true, error.message);
 
-    if (error) return sendResponse(res, 400, null, true, error.message);
-
-    const user = await User.findOne({ email: value.email });
+    const user = await User.findOne({ email });
     if (user) return sendResponse(res, 403, null, true, "User already registered with this email");
 
-    const hashedPassword = await bcrypt.hash(value.password, 12);
-    value.password = hashedPassword;
+    const hashedPassword = await bcrypt.hash(req.body.password, 12);
 
-    if (!value.imageUrl) {
-      value.imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFCzxivJXCZk0Kk8HsHujTO3Olx0ngytPrWw&s"; 
+    if (!user.imageUrl) {
+      user.imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFCzxivJXCZk0Kk8HsHujTO3Olx0ngytPrWw&s"; 
     }
 
-    let newUser = new User({ ...value });
-    newUser = await newUser.save();
-    sendResponse(res, 201, newUser, false, "User Register Successfully")
+    // let newUser = new User({ ...value });
+    let newUser = await User.create({...req.body, password: hashedPassword});
+    sendResponse(res, 201, newUser, "User Register Successfully");
 
   } catch (error) {
     console.error(error.message);
@@ -64,6 +64,7 @@ router.post("/register", async (req, res) => {
   }
 
 });
+
 
 // Get all users route
 router.get("/all-users", async (req, res) => {
