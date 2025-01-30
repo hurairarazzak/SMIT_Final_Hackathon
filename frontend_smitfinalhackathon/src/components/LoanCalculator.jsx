@@ -192,6 +192,7 @@ export default function LoanCalculator() {
           email: values.email,
           password: uniquePassword,
           cnic: values.cnic,
+          imageUrl: values.imageUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFCzxivJXCZk0Kk8HsHujTO3Olx0ngytPrWw&s",
         })
         .then((res) => {
           message.success(

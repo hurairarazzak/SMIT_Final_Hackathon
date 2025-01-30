@@ -50,6 +50,10 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(value.password, 12);
     value.password = hashedPassword;
 
+    if (!value.imageUrl) {
+      value.imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFCzxivJXCZk0Kk8HsHujTO3Olx0ngytPrWw&s"; 
+    }
+
     let newUser = new User({ ...value });
     newUser = await newUser.save();
     sendResponse(res, 201, newUser, false, "User Register Successfully")
