@@ -97,7 +97,7 @@ export default function LoanCalculator() {
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields(); // Validate fields before submission
-      // console.log("Form values:", values);
+      console.log("Form values:", values);
 
       const uniquePassword = generateRandomPassword(); // Generate a unique password for the user
 
@@ -185,14 +185,14 @@ export default function LoanCalculator() {
 </html>
            `,
       });
-      // console.log("Email sent:", res);
+      console.log("Email sent:", res);
       const newUser = await axios
         .post(AppRoutes.register, {
           fullName: values.name,
           email: values.email,
           password: uniquePassword,
           cnic: values.cnic,
-          imageUrl: values.imageUrl || "https://e7.pngegg.com/pngimages/636/141/png-clipart-computer-icons-user-s-included-miscellaneous-user-profile.png",
+          imageUrl: values.imageUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFCzxivJXCZk0Kk8HsHujTO3Olx0ngytPrWw&s",
         })
         .then((res) => {
           message.success(
