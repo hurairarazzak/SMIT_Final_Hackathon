@@ -1,4 +1,4 @@
-import React, { useContext ,useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Card,
   Form,
@@ -19,26 +19,28 @@ import { AppRoutes } from "../../routes/routes";
 const UserProfile = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     fetchUserData();
   }, []);
 
   const fetchUserData = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(AppRoutes.getMyInfo, {
         headers: {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
       });
-      // console.log("User data:", response.data.data);
       console.log("User data=>", response.data.data);
       setUserData(response.data.data);
-      form.setFieldsValue(response.data.data);
+      form.setFieldsValue(response.data.data);  // Set form values from the fetched user data
     } catch (error) {
       console.error("Failed to fetch user data:", error);
       message.error("Failed to load user data.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -46,8 +48,25 @@ const UserProfile = () => {
     setLoading(true);
     try {
       const { user } = useContext(AuthContext);
-      const response = await axios.put(`/api/user/${user?._id}`, values);
-      setUserData(response.data);
+      const formData = new FormData();
+      
+      // Add profile picture to FormData if uploaded
+      if (values.profilePicture && values.profilePicture.file) {
+        formData.append('profilePicture', values.profilePicture.file);
+      }
+
+      // Add other form values
+      formData.append('name', values.name);
+      formData.append('phone', values.phone);
+      formData.append('address', values.address);
+      
+      const response = await axios.put(`/api/user/${user?._id}`, formData, {
+     headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      });
+
+      setUserData(response.data);  // Update user data with the response from the API
       message.success("Profile updated successfully!");
     } catch (error) {
       console.error("Failed to update profile:", error);
@@ -56,6 +75,11 @@ const UserProfile = () => {
       setLoading(false);
     }
   };
+
+  if (!userData) {
+    // Show a loading spinner or message while the user data is being fetched
+    return <div>Loading user data...</div>;
+  }
 
   return (
     <div style={{ padding: "20px" }}>
@@ -77,7 +101,7 @@ const UserProfile = () => {
           form={form}
           layout="vertical"
           onFinish={handleUpdateProfile}
-          initialValues={userData}
+          initialValues={userData}  // Initial form values from fetched user data
         >
           <Form.Item
             label="Full Name"
@@ -101,9 +125,7 @@ const UserProfile = () => {
           <Form.Item
             label="Phone Number"
             name="phone"
-            rules={[
-              { required: true, message: "Please enter your phone number!" },
-            ]}
+            rules={[{ required: true, message: "Please enter your phone number!" }]}
           >
             <Input placeholder="Enter your phone number" />
           </Form.Item>
