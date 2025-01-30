@@ -12,13 +12,10 @@ import {
   Spin,
 } from "antd";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom'
 import { AppRoutes } from "../routes/routes";
 
 const { Title, Paragraph } = Typography;
 const { Option } = Select;
-const navigate = useNavigate();
-
 const loanCategories = {
   "Wedding Loans": {
     subcategories: ["Valima", "Furniture", "Valima Food", "Jahez"],

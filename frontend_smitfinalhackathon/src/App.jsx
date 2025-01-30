@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Route, Routes, useNavigate } from 'react-router'
+import { BrowserRouter, Route, Routes } from 'react-router'
 import Cookies from "js-cookie";
 import Home from './pages/root/home'
 import Login from './pages/auth/Login'
@@ -13,39 +13,36 @@ import Navbar from './components/ui/Navbar';
 import Footer from './components/ui/Footer';
 
 function App() {
-  
-  const {user} = useContext(AuthContext)
-  // console.log("User=>", user);
-  
+  const { user } = useContext(AuthContext);
+
   return (
-   <BrowserRouter>
-   <Navbar />
-    <Routes>
-      <Route path='/' element={<Home />}></Route>
-      <Route path='/loan-calculator' element={<LoanCalculator />} />
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/loan-calculator' element={<LoanCalculator />} />
 
-      {/* Auth Routes */}
-      <Route path='/auth'>
-        <Route index path="login" element={<Login />} />
-        <Route path="sign-up" element={<Signup />} />
-      </Route>
+        {/* Auth Routes */}
+        <Route path='/auth'>
+          <Route index path="login" element={<Login />} />
+          <Route path="sign-up" element={<Signup />} />
+        </Route>
 
-      {/* Admin Dashboard Routes */}
-      <Route path='/admin-dashboard' element={user?.role == "admin" ? <Dashboard /> : ""}>
-        <Route index path="profile" element={<Home />} />
-        <Route path="settings" element={<Home />} />
-      </Route>
+        {/* Admin Dashboard Routes */}
+        <Route path='/admin-dashboard' element={user?.role === "admin" ? <Dashboard /> : ""}>
+          <Route index path="profile" element={<Home />} />
+          <Route path="settings" element={<Home />} />
+        </Route>
 
-      {/* User Dashboard Routes */}
-      <Route path='/user-dashboard' element={user?.role == "user" ? <UserDashboard /> : ""}>
-        <Route index path="profile" element={<Home />} />
-        <Route path="settings" element={<Home />} />
-      </Route>
-
-    </Routes>
-    <Footer />
-   </BrowserRouter>
+        {/* User Dashboard Routes */}
+        <Route path='/user-dashboard' element={user?.role === "user" ? <UserDashboard /> : ""}>
+          <Route index path="profile" element={<Home />} />
+          <Route path="settings" element={<Home />} />
+        </Route>
+      </Routes>
+      <Footer />
+    </BrowserRouter>
   )
 }
 
-export default App
+export default App;

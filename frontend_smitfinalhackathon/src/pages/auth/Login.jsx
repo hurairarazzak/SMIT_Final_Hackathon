@@ -19,22 +19,15 @@ const Login = () => {
       console.log("Login response:", response);
       
 
-      if (response?.status == 200) {
+      if (response?.status === 200) {
         const { token, user } = response.data.data;
-
-        // Save token to cookies
         Cookies.set("token", token);
+        
         message.success("Login successful!");
-
-        // Redirect based on user role
+        setUser(user); // Update user context
+      
         setTimeout(() => {
-          if (user.role === "admin") {
-            navigate("/admin-dashboard");
-          } else if (user.role === "user") {
-            navigate("/user-dashboard");
-          } else {
-            message.error("You are not authorized to login.");
-          }
+          navigate(user.role === "admin" ? "/admin-dashboard" : "/user-dashboard");
         }, 2300);
       } else {
         message.error("Login failed. Please check your credentials.");
