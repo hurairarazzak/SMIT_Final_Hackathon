@@ -28,7 +28,7 @@ export default function AuthContextProvider({ children }) {
       })
       .then((res) => {
         if (res.data?.data) {
-          console.log("User data fetched successfully:", res.data);
+          // console.log("User data fetched successfully:", res.data);
           setUser(res.data.data);
         } else {
           console.log("No user data found");

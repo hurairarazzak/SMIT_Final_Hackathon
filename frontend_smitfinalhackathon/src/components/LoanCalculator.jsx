@@ -204,7 +204,6 @@ export default function LoanCalculator() {
           setLoanPeriod("");
           setLoanBreakdown(null);
           setLoading(false);
-          navigate("/login");
         })
         .catch((err) => {
           message.error(
