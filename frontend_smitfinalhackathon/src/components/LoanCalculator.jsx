@@ -96,17 +96,17 @@ export default function LoanCalculator() {
 
   const handleSubmit = async () => {
     try {
-      const values = await form.validateFields(); // Validate fields before submission
-      console.log("Form values:", values);
+      const value = await form.validateFields(); // Validate fields before submission
+      console.log("Form value:", value);
 
       const uniquePassword = generateRandomPassword(); // Generate a unique password for the user
 
       setLoading(true);
       // Make API request
       const res = await axios.post(AppRoutes.sendLoginPassword, {
-        senderName: values.name,
+        senderName: value.name,
         sender: "hurairarazzak125@gmail.com",
-        receiver: values.email,
+        receiver: value.email,
         subject: "Your Account Password",
         message: `
               <html>
@@ -170,7 +170,7 @@ export default function LoanCalculator() {
 <body>
   <div class="container">
     <h1>Welcome to Our Platform!</h1>
-    <p>Hello, <span class="highlight">${values.name}</span>,</p>
+    <p>Hello, <span class="highlight">${value.name}</span>,</p>
     <p>We're thrilled to have you on board. Here is your account password:</p>
     <p style="font-size: 18px; text-align: center; background: #f9f9f9; padding: 10px; border-radius: 8px; font-weight: bold;">
       ${uniquePassword}
@@ -188,11 +188,11 @@ export default function LoanCalculator() {
       console.log("Email sent:", res);
       const newUser = await axios
         .post(AppRoutes.register, {
-          fullName: values.name,
-          email: values.email,
+          fullName: value.name,
+          email: value.email,
           password: uniquePassword,
-          cnic: values.cnic,
-          imageUrl: values.imageUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFCzxivJXCZk0Kk8HsHujTO3Olx0ngytPrWw&s",
+          cnic: value.cnic,
+          imageUrl: value.imageUrl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFCzxivJXCZk0Kk8HsHujTO3Olx0ngytPrWw&s"
         })
         .then((res) => {
           message.success(
@@ -218,7 +218,7 @@ export default function LoanCalculator() {
       form.resetFields(); // Clear form after submission
     } catch (error) {
       if (error.name === "ValidationError") {
-        message.error("Please fill in all fields correctly.");
+        message.error("Please fill all fields correctly.");
       } else {
         // console.error("Failed to submit form:", error);
         message.error("Failed to submit form. Please try again later.");
