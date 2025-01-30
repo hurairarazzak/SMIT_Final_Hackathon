@@ -146,7 +146,6 @@ const UserDashboard = () => {
                                 overflow: "hidden",
                             }}
                         >
-                            {currentUser?.imageUrl ? (
                                 <img
                                     src={currentUser.imageUrl}
                                     alt="User"
@@ -156,11 +155,6 @@ const UserDashboard = () => {
                                         objectFit: "cover",
                                     }}
                                 />
-                            ) : (
-                                <span style={{ fontWeight: "bold", color: "#555" }}>
-                                    {currentUser?.name?.[0]?.toUpperCase()}
-                                </span>
-                            )}
                         </div>
                     </div>
                 </Header>

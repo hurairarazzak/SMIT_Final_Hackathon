@@ -1,11 +1,11 @@
-import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router'
+import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router';
 import Cookies from "js-cookie";
-import Home from './pages/root/home'
-import Login from './pages/auth/Login'
-import Signup from './pages/auth/signup'
-import LoanCalculator from './components/LoanCalculator'
-import Dashboard from './pages/adminDashboard/Dashboard'
+import Home from './pages/root/home';
+import Login from './pages/auth/Login';
+import Signup from './pages/auth/signup';
+import LoanCalculator from './components/LoanCalculator';
+import Dashboard from './pages/adminDashboard/Dashboard';
 import { useContext } from 'react';
 import { AuthContext } from './context/UserContext';
 import UserDashboard from './pages/userDashboard/Dashboard';
@@ -13,7 +13,11 @@ import Navbar from './components/ui/Navbar';
 import Footer from './components/ui/Footer';
 
 function App() {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading state
+  }
 
   return (
     <BrowserRouter>
@@ -42,7 +46,7 @@ function App() {
       </Routes>
       <Footer />
     </BrowserRouter>
-  )
+  );
 }
 
 export default App;

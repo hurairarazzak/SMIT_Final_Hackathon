@@ -1,46 +1,45 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
-import { AppRoutes } from "../routes/routes"; // Make sure this path is correct
+import { AppRoutes } from "../routes/routes"; 
 
 export const AuthContext = createContext();
 
 export default function AuthContextProvider({ children }) {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);  // Loading state to handle async
 
   useEffect(() => {
-    // Check if user is already set or if token is available
     const token = Cookies.get("token");
     
     if (token && !user) {
       getUser(token);
+    } else {
+      setLoading(false);  // If no token, set loading to false
     }
-
   }, [user]);
 
-  // Fetch user data using the token
   const getUser = (token) => {
     axios
       .get(AppRoutes.getMyInfo, {
         headers: {
-          Authorization: `Bearer ${token}`,  // Pass the token in Authorization header
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
         if (res.data?.data) {
-          // console.log("User data fetched successfully:", res.data);
           setUser(res.data.data);
-        } else {
-          console.log("No user data found");
         }
+        setLoading(false);  // Set loading to false after user is fetched
       })
       .catch((err) => {
         console.error("Error fetching user data:", err.response || err);
+        setLoading(false);  // Set loading to false in case of error
       });
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, loading }}>
       {children}
     </AuthContext.Provider>
   );
