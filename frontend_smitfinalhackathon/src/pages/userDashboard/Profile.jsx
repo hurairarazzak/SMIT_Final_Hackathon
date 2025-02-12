@@ -8,7 +8,6 @@ const { Title } = Typography;
 
 const Profile = () => {
     const [form] = Form.useForm(); 
-    const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(true);
     const { user, setUser } = useContext(AuthContext);
 
@@ -49,7 +48,6 @@ const Profile = () => {
     };
 
     const onFinish = async (values) => {
-        setLoading(true);
         try {
             const response = await axios.put(`${AppRoutes.updateUser}/${user._id}`, values, {
                 headers: {
@@ -67,8 +65,6 @@ const Profile = () => {
 
         } catch (error) {
             message.error("Failed to update profile");
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -79,7 +75,6 @@ const Profile = () => {
     return (
         <div style={{ maxWidth: "600px", margin: "0 auto" }}>
             <Title level={2}>Profile</Title>
-            {/* ✅ Pass form instance correctly */}
             <Form form={form} onFinish={onFinish} layout="vertical">
                 <Form.Item label="Name" name="fullName">
                     <Input />
@@ -100,7 +95,7 @@ const Profile = () => {
                     <Input />
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" loading={loading}>
+                    <Button type="primary" htmlType="submit">
                         Update Profile
                     </Button>
                 </Form.Item>

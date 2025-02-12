@@ -26,7 +26,7 @@ const { Title, Text } = Typography;
 const UserDashboard = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState("dashboard");
-  const { user, loading, logout } = useContext(AuthContext); 
+  const { user, logout } = useContext(AuthContext); 
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate(); // Add useNavigate for navigation
 
