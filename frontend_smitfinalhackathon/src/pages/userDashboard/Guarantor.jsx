@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Typography, Card, Row, Col, Upload, message } from "antd";
-import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined } from "@ant-design/icons";
 
 const GuarantorAndPersonalDetails = () => {
   const [form] = Form.useForm();
+  const [statementFileList, setStatementFileList] = useState([]);
+  const [salarySheetFileList, setSalarySheetFileList] = useState([]);
 
   const handleSubmit = async () => {
     try {
@@ -16,9 +18,17 @@ const GuarantorAndPersonalDetails = () => {
     }
   };
 
+  const handleStatementUpload = ({ fileList }) => {
+    setStatementFileList(fileList);
+  };
+
+  const handleSalarySheetUpload = ({ fileList }) => {
+    setSalarySheetFileList(fileList);
+  };
+
   return (
     <div style={{ padding: "20px" }}>
-      <Typography.Title level={3} style={{ textAlign: "center", marginBottom: "20px" }}>
+      <Typography.Title level={3} style={{ textAlign: "center", marginBottom: "24px" }}>
         Provide Additional Details
       </Typography.Title>
 
@@ -27,7 +37,7 @@ const GuarantorAndPersonalDetails = () => {
           {/* Personal Information */}
           <Typography.Title level={4}>Personal Information</Typography.Title>
           <Row gutter={[16, 16]}>
-            <Col span={12}>
+            <Col xs={24} sm={12} md={12} lg={12} xl={12}>
               <Form.Item
                 label="Full Name"
                 name="name"
@@ -36,7 +46,7 @@ const GuarantorAndPersonalDetails = () => {
                 <Input placeholder="Enter your full name" />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col xs={24} sm={12} md={12} lg={12} xl={12}>
               <Form.Item
                 label="Phone Number"
                 name="phone"
@@ -60,7 +70,7 @@ const GuarantorAndPersonalDetails = () => {
           <Typography.Title level={4}>Guarantors' Information</Typography.Title>
           {[1, 2].map((guarantor) => (
             <Row gutter={[16, 16]} key={guarantor}>
-              <Col span={12}>
+              <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                 <Form.Item
                   label={`Guarantor ${guarantor} Name`}
                   name={`guarantor${guarantor}Name`}
@@ -69,7 +79,7 @@ const GuarantorAndPersonalDetails = () => {
                   <Input placeholder="Enter guarantor's name" />
                 </Form.Item>
               </Col>
-              <Col span={12}>
+              <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                 <Form.Item
                   label={`Guarantor ${guarantor} Email`}
                   name={`guarantor${guarantor}Email`}
@@ -78,7 +88,7 @@ const GuarantorAndPersonalDetails = () => {
                   <Input placeholder="Enter guarantor's email" />
                 </Form.Item>
               </Col>
-              <Col span={12}>
+              <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                 <Form.Item
                   label={`Guarantor ${guarantor} Location`}
                   name={`guarantor${guarantor}Location`}
@@ -87,7 +97,7 @@ const GuarantorAndPersonalDetails = () => {
                   <Input placeholder="Enter guarantor's location" />
                 </Form.Item>
               </Col>
-              <Col span={12}>
+              <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                 <Form.Item
                   label={`Guarantor ${guarantor} CNIC`}
                   name={`guarantor${guarantor}Cnic`}
@@ -101,25 +111,6 @@ const GuarantorAndPersonalDetails = () => {
               </Col>
             </Row>
           ))}
-
-          {/* Optional Files */}
-          <Typography.Title level={4}>Optional Documents</Typography.Title>
-          <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <Form.Item label="Upload Statement" name="statement">
-                <Upload beforeUpload={() => false} maxCount={1}>
-                  <Button icon={<UploadOutlined />}>Upload Statement</Button>
-                </Upload>
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="Upload Salary Sheet" name="salarySheet">
-                <Upload beforeUpload={() => false} maxCount={1}>
-                  <Button icon={<UploadOutlined />}>Upload Salary Sheet</Button>
-                </Upload>
-              </Form.Item>
-            </Col>
-          </Row>
 
           {/* Submit Button */}
           <Form.Item>

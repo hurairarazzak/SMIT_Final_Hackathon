@@ -1,168 +1,112 @@
-import React, { useContext, useState, useEffect } from "react";
-import {
-  Card,
-  Form,
-  Input,
-  Button,
-  Typography,
-  message,
-  Row,
-  Col,
-  Upload,
-} from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import React, { useState, useEffect, useContext } from "react";
+import { Form, Input, Button, Typography, message, Spin } from "antd";
 import { AuthContext } from "../../context/UserContext";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { AppRoutes } from "../../routes/routes";
 
-const UserProfile = () => {
-  const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState(null);
+const { Title } = Typography;
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+const Profile = () => {
+    const [form] = Form.useForm(); 
+    const [loading, setLoading] = useState(false);
+    const [fetching, setFetching] = useState(true);
+    const { user, setUser } = useContext(AuthContext);
 
-  const fetchUserData = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(AppRoutes.getMyInfo, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        },
-      });
-      console.log("User data=>", response.data.data);
-      setUserData(response.data.data);
-      form.setFieldsValue(response.data.data);  // Set form values from the fetched user data
-    } catch (error) {
-      console.error("Failed to fetch user data:", error);
-      message.error("Failed to load user data.");
-    } finally {
-      setLoading(false);
+    useEffect(() => {
+        if (user && user._id) {
+            fetchUserData();
+        } else {
+            setFetching(false);
+        }
+    }, [user]);
+
+    const fetchUserData = async () => {
+        try {
+            const response = await axios.get(`${AppRoutes.updateUser}/${user._id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+            const userData = response.data.data;
+
+            setTimeout(() => {
+                form.setFieldsValue({
+                    fullName: userData.fullName || "",
+                    email: userData.email || "",
+                    cnic: userData.cnic || "",
+                    mobileNo: userData.mobileNo || "",
+                    fatherName: userData.fatherName || "",
+                    address: userData.address || "",
+                });
+            }, 0); 
+
+        } catch (error) {
+            console.error("Failed to fetch user data:", error);
+            message.error("Failed to fetch user data");
+        } finally {
+            setFetching(false);
+        }
+    };
+
+    const onFinish = async (values) => {
+        setLoading(true);
+        try {
+            const response = await axios.put(`${AppRoutes.updateUser}/${user._id}`, values, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            setUser(response.data.data);
+            message.success("Profile updated successfully");
+
+            setTimeout(() => {
+                form.setFieldsValue(response.data.data);
+            }, 0);
+
+        } catch (error) {
+            message.error("Failed to update profile");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (fetching) {
+        return <Spin size="large" style={{ display: "flex", justifyContent: "center", marginTop: "20px" }} />;
     }
-  };
 
-  const handleUpdateProfile = async (values) => {
-    setLoading(true);
-    try {
-      const { user } = useContext(AuthContext);
-      const formData = new FormData();
-      
-      // Add profile picture to FormData if uploaded
-      if (values.profilePicture && values.profilePicture.file) {
-        formData.append('profilePicture', values.profilePicture.file);
-      }
-
-      // Add other form values
-      formData.append('name', values.name);
-      formData.append('phone', values.phone);
-      formData.append('address', values.address);
-      
-      const response = await axios.put(`/api/user/${user?._id}`, formData, {
-     headers: {
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        },
-      });
-
-      setUserData(response.data);  // Update user data with the response from the API
-      message.success("Profile updated successfully!");
-    } catch (error) {
-      console.error("Failed to update profile:", error);
-      message.error("Failed to update profile. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (!userData) {
-    // Show a loading spinner or message while the user data is being fetched
-    return <div>Loading user data...</div>;
-  }
-
-  return (
-    <div style={{ padding: "20px" }}>
-      <Typography.Title
-        level={3}
-        style={{ textAlign: "center", marginBottom: "20px" }}
-      >
-        User Profile
-      </Typography.Title>
-
-      <Card
-        style={{
-          maxWidth: "600px",
-          margin: "0 auto",
-          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={handleUpdateProfile}
-          initialValues={userData}  // Initial form values from fetched user data
-        >
-          <Form.Item
-            label="Full Name"
-            name="name"
-            rules={[{ required: true, message: "Please enter your name!" }]}
-          >
-            <Input placeholder="Enter your full name" />
-          </Form.Item>
-
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              { required: true, message: "Please enter your email!" },
-              { type: "email", message: "Please enter a valid email address!" },
-            ]}
-          >
-            <Input placeholder="Enter your email" disabled />
-          </Form.Item>
-
-          <Form.Item
-            label="Phone Number"
-            name="phone"
-            rules={[{ required: true, message: "Please enter your phone number!" }]}
-          >
-            <Input placeholder="Enter your phone number" />
-          </Form.Item>
-
-          <Form.Item
-            label="Address"
-            name="address"
-            rules={[{ required: true, message: "Please enter your address!" }]}
-          >
-            <Input placeholder="Enter your address" />
-          </Form.Item>
-
-          <Form.Item label="Profile Picture" name="profilePicture">
-            <Upload
-              name="profile"
-              listType="picture"
-              beforeUpload={() => false} // Prevent automatic upload
-              maxCount={1}
-            >
-              <Button icon={<UploadOutlined />}>Upload Profile Picture</Button>
-            </Upload>
-          </Form.Item>
-
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={loading}
-              style={{ width: "100%" }}
-            >
-              Update Profile
-            </Button>
-          </Form.Item>
-        </Form>
-      </Card>
-    </div>
-  );
+    return (
+        <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+            <Title level={2}>Profile</Title>
+            {/* ✅ Pass form instance correctly */}
+            <Form form={form} onFinish={onFinish} layout="vertical">
+                <Form.Item label="Name" name="fullName">
+                    <Input />
+                </Form.Item>
+                <Form.Item label="Email" name="email">
+                    <Input disabled />
+                </Form.Item>
+                <Form.Item label="CNIC" name="cnic">
+                    <Input disabled />
+                </Form.Item>
+                <Form.Item label="Mobile No" name="mobileNo">
+                    <Input />
+                </Form.Item>
+                <Form.Item label="Father's Name" name="fatherName">
+                    <Input />
+                </Form.Item>
+                <Form.Item label="Address" name="address">
+                    <Input />
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" loading={loading}>
+                        Update Profile
+                    </Button>
+                </Form.Item>
+            </Form>
+        </div>
+    );
 };
 
-export default UserProfile;
+export default Profile;

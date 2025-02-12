@@ -13,10 +13,10 @@ const Login = () => {
   const onFinish = async (values) => {
     setLoading(true);
     try {
-      console.log("Form values:", values);
+      // console.log("Form values:", values);
 
       const response = await axios.post(AppRoutes.login, values); 
-      console.log("Login response:", response);
+      // console.log("Login response:", response);
       
 
       if (response?.status == 200) {

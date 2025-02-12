@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Form, Select, Input, Button, Card, Typography } from 'antd';
+import { Form, Select, Input, Button, Card, Typography, Space } from 'antd';
 import QRCode from 'react-qr-code';
 import { jsPDF } from 'jspdf';
 
@@ -55,21 +55,25 @@ export default function RequestForm() {
 
   const downloadSlipAsPDF = () => {
     const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text('Loan Request Slip', 20, 20);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.text('Loan Request Slip', 75, 20);
     doc.setFontSize(12);
+    doc.setFont('helvetica', 'normal');
+    
     doc.text(`Token Number: ${slipData.token}`, 20, 40);
     doc.text(`Category: ${slipData.category}`, 20, 50);
     doc.text(`Subcategory: ${slipData.subcategory}`, 20, 60);
     doc.text(`Amount: PKR ${slipData.amount}`, 20, 70);
     doc.text(`Loan Period: ${slipData.period} years`, 20, 80);
     doc.text(`Appointment: ${slipData.appointment}`, 20, 90);
+    
     doc.save('Loan_Request_Slip.pdf');
   };
 
   return (
     <Card style={{ maxWidth: 600, margin: '50px auto', padding: 20 }}>
-      <Title level={2}>Loan Request Form</Title>
+      <Title level={2} style={{ textAlign: 'center' }}>Loan Request Form</Title>
       <Form layout='vertical' onFinish={handleSubmit}>
         <Form.Item label='Select Category' required>
           <Select placeholder='Choose a category' onChange={handleCategoryChange}>
@@ -98,21 +102,23 @@ export default function RequestForm() {
         </Form.Item>
 
         <Form.Item>
-          <Button type='primary' htmlType='submit'>Submit Request</Button>
+          <Button type='primary' htmlType='submit' block>Submit Request</Button>
         </Form.Item>
       </Form>
 
       {slipData && (
-        <Card style={{ marginTop: 20, textAlign: 'center' }}>
+        <Card style={{ marginTop: 20, textAlign: 'center', background: '#f5f5f5', padding: 15, borderRadius: 10 }}>
           <Title level={3}>Loan Request Slip</Title>
-          <Paragraph><strong>Token Number:</strong> {slipData.token}</Paragraph>
-          <Paragraph><strong>Category:</strong> {slipData.category}</Paragraph>
-          <Paragraph><strong>Subcategory:</strong> {slipData.subcategory}</Paragraph>
-          <Paragraph><strong>Amount:</strong> PKR {slipData.amount}</Paragraph>
-          <Paragraph><strong>Loan Period:</strong> {slipData.period} years</Paragraph>
-          <Paragraph><strong>Appointment:</strong> {slipData.appointment}</Paragraph>
-          <QRCode value={JSON.stringify(slipData)} size={150} className='text-center' />
-          <Button type='primary' onClick={downloadSlipAsPDF} style={{ marginTop: 20 }}>Download PDF</Button>
+          <Space direction='vertical' size='middle' style={{ display: 'flex' }}>
+            <Paragraph><strong>Token Number:</strong> {slipData.token}</Paragraph>
+            <Paragraph><strong>Category:</strong> {slipData.category}</Paragraph>
+            <Paragraph><strong>Subcategory:</strong> {slipData.subcategory}</Paragraph>
+            <Paragraph><strong>Amount:</strong> PKR {slipData.amount}</Paragraph>
+            <Paragraph><strong>Loan Period:</strong> {slipData.period} years</Paragraph>
+            <Paragraph><strong>Appointment:</strong> {slipData.appointment}</Paragraph>
+            <QRCode value={JSON.stringify(slipData)} size={150} style={{ margin: 'auto' }} />
+            <Button type='primary' onClick={downloadSlipAsPDF} style={{ marginTop: 10 }}>Download PDF</Button>
+          </Space>
         </Card>
       )}
     </Card>

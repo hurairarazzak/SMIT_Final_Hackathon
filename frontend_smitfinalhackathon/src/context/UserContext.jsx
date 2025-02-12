@@ -7,17 +7,21 @@ export const AuthContext = createContext();
 
 export default function AuthContextProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);  // Loading state to handle async
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = Cookies.get("token");
+    const token = Cookies.get("token")
     
     if (token && !user) {
       getUser(token);
     } else {
-      setLoading(false);  // If no token, set loading to false
+      setLoading(false); 
     }
   }, [user]);
+
+  const logout = () => {
+    localStorage.removeItem("user");
+};
 
   const getUser = (token) => {
     axios
@@ -39,7 +43,7 @@ export default function AuthContextProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
+    <AuthContext.Provider value={{ user, setUser, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

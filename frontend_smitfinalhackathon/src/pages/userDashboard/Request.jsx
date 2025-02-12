@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Typography, Row, Col, Table } from "antd";
+import { Card, Typography, Row, Col, Table, Spin } from "antd";
 
 const LoanRequestDetails = ({ loanDetails }) => {
   // Sample data structure for loanDetails
@@ -13,6 +13,11 @@ const LoanRequestDetails = ({ loanDetails }) => {
     tokenNumber,
     appointmentDetails,
   } = loanDetails || {};
+
+  // Add a unique key to each guarantor
+  const guarantorsWithKeys = guarantors
+    ? guarantors.map((guarantor, index) => ({ ...guarantor, key: index }))
+    : [];
 
   const columns = [
     {
@@ -38,64 +43,79 @@ const LoanRequestDetails = ({ loanDetails }) => {
   ];
 
   return (
-    <div style={{ padding: "20px" }}>
-      <Typography.Title level={3} style={{ textAlign: "center", marginBottom: "20px" }}>
+    <div style={{ padding: "20px", maxWidth: "1200px", margin: "0 auto" }}>
+      <Typography.Title level={3} style={{ textAlign: "center", marginBottom: "24px" }}>
         Loan Request Details
       </Typography.Title>
 
-      <Card style={{ marginBottom: "20px", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}>
+      {/* Loan Details Card */}
+      <Card
+        title="Loan Details"
+        style={{ marginBottom: "24px", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}
+      >
         <Row gutter={[16, 16]}>
-          <Col span={12}>
+          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
             <Typography.Text strong>Category:</Typography.Text>
             <Typography.Text> {category || "N/A"}</Typography.Text>
           </Col>
-          <Col span={12}>
+          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
             <Typography.Text strong>Subcategory:</Typography.Text>
             <Typography.Text> {subcategory || "N/A"}</Typography.Text>
           </Col>
-          <Col span={12}>
+          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
             <Typography.Text strong>Loan Amount:</Typography.Text>
             <Typography.Text> PKR {loanAmount || "N/A"}</Typography.Text>
           </Col>
-          <Col span={12}>
+          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
             <Typography.Text strong>Loan Period:</Typography.Text>
             <Typography.Text> {loanPeriod || "N/A"} years</Typography.Text>
           </Col>
         </Row>
       </Card>
 
-      <Card style={{ marginBottom: "20px", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}>
-        <Typography.Title level={4}>Guarantors</Typography.Title>
+      {/* Guarantors Card */}
+      <Card
+        title="Guarantors"
+        style={{ marginBottom: "24px", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}
+      >
         <Table
-          dataSource={guarantors || []}
+          dataSource={guarantorsWithKeys}
           columns={columns}
           pagination={false}
           bordered
-          style={{ marginTop: "20px" }}
+          scroll={{ x: true }} // Make table scrollable on small screens
+          loading={!guarantors} // Show loading spinner if data is not available
         />
       </Card>
 
-      <Card style={{ marginBottom: "20px", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}>
-        <Typography.Title level={4}>Personal Information</Typography.Title>
+      {/* Personal Information Card */}
+      <Card
+        title="Personal Information"
+        style={{ marginBottom: "24px", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}
+      >
         <Row gutter={[16, 16]}>
-          <Col span={12}>
+          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
             <Typography.Text strong>Address:</Typography.Text>
             <Typography.Text> {personalInfo?.address || "N/A"}</Typography.Text>
           </Col>
-          <Col span={12}>
+          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
             <Typography.Text strong>Phone:</Typography.Text>
             <Typography.Text> {personalInfo?.phone || "N/A"}</Typography.Text>
           </Col>
         </Row>
       </Card>
 
-      <Card style={{ marginBottom: "20px", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}>
+      {/* Token and Appointment Details Card */}
+      <Card
+        title="Additional Details"
+        style={{ marginBottom: "24px", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}
+      >
         <Row gutter={[16, 16]}>
-          <Col span={12}>
+          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
             <Typography.Text strong>Token Number:</Typography.Text>
             <Typography.Text> {tokenNumber || "N/A"}</Typography.Text>
           </Col>
-          <Col span={12}>
+          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
             <Typography.Text strong>Appointment Details:</Typography.Text>
             <Typography.Text> {appointmentDetails || "N/A"}</Typography.Text>
           </Col>

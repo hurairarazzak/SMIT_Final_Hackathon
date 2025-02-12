@@ -51,7 +51,7 @@ router.post("/register", async (req, res) => {
     value.password = hashedPassword;
 
     if (!value.imageUrl) {
-      value.imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFCzxivJXCZk0Kk8HsHujTO3Olx0ngytPrWw&s"; 
+      value.imageUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"; 
     }
 
     let newUser = new User({ ...value });
@@ -62,52 +62,62 @@ router.post("/register", async (req, res) => {
     console.error(error.message);
     sendResponse(res, 500, null, true, error.message);
   }
+});
 
+
+router.post("/submit", async (req, res) => {
+  try {
+    const loanRequest = new LoanRequest(req.body);
+    await loanRequest.save();
+    res.status(201).json({ success: true, message: "Loan request submitted!" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 });
 
 // Get all users route
 router.get("/all-users", async (req, res) => {
-  try {
-    const users = await User.find();
-    sendResponse(res, 200, users, false, "All users fetched successfully");
-  } catch (error) {
-    console.error(error);
-    sendResponse(res, 500, null, true, "Internal server error");
-  }
-});
-
-// Get single user route
-router.get("/user/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const user = await User.findById(id);
-
-    if (!user) return sendResponse(res, 404, null, true, "User not found")
-
-    sendResponse(res, 200, user, false, "User fetched successfully");
-
-  } catch (error) {
-    console.error(error.message);
-    sendResponse(res, 500, null, true, "Internal server error");
-  }
-})
-
-// Update user route
-router.put("/user/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    let user = await User.findById(id);
-
-    if (!user) return sendResponse(res, 404, null, true, "User not found")
-
-    user = await User.findByIdAndUpdate(id, req.body, { new: true });
-
-    sendResponse(res, 200, user, false, "User updated successfully");
-  } catch (error) {
-    console.error(error.message);
-    sendResponse(res, 500, null, true, "Internal server error");
-  }
-})
+    try {
+      const users = await User.find();
+      sendResponse(res, 200, users, false, "All users fetched successfully");
+    } catch (error) {
+      console.error(error);
+      sendResponse(res, 500, null, true, "Internal server error");
+    }
+  });
+  
+  // Get single user route
+  router.get("/user/:id", async (req, res) => {
+    try {
+      const id = req.params.id;
+      const user = await User.findById(id);
+  
+      if (!user) return sendResponse(res, 404, null, true, "User not found")
+  
+      sendResponse(res, 200, user, false, "User fetched successfully");
+  
+    } catch (error) {
+      console.error(error.message);
+      sendResponse(res, 500, null, true, "Internal server error");
+    }
+  })
+  
+  // Update user route
+  router.put("/user/:id", async (req, res) => {
+    try {
+      const id = req.params.id;
+      let user = await User.findById(id);
+  
+      if (!user) return sendResponse(res, 404, null, true, "User not found")
+  
+      user = await User.findByIdAndUpdate(id, req.body, { new: true });
+  
+      sendResponse(res, 200, user, false, "User updated successfully");
+    } catch (error) {
+      console.error(error.message);
+      sendResponse(res, 500, null, true, "Internal server error");
+    }
+  })
 
 // Forgot password route (#Not applicable for now!)
 router.post('/forgot-password', async (req, res) => {

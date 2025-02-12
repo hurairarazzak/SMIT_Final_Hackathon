@@ -131,19 +131,6 @@ const Dashboard = () => {
               marginLeft: "auto", // Move button to the right side
             }}
           >
-            {/* {currentUser?.imageUrl ? (
-      <img
-        src={user.imageUrl}
-        alt="User"
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-        }}
-      />
-    ) : (
-      <span>{user.fullName[0].toUpperCase()}</span> // Fallback to first letter (uppercase)
-    )} */}
           </button>
         </Header>
         <Content

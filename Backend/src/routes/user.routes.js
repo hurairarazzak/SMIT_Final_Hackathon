@@ -2,22 +2,21 @@ import express from "express";
 import sendResponse from "../helpers/sendResponse.js";
 import "dotenv/config";
 import User from "../models/User.model.js";
-import { authorizationUser } from "../middlewares/authorization.js";
+import { authorizationUser, verifyUser } from "../middlewares/authorization.js";
 import nodemailer from "nodemailer";
 
 const router = express.Router();
 
 router.get("/get-my-info", authorizationUser, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);  // Use req.user._id
+    const user = await User.findById(req.user._id);
     if (!user) return sendResponse(res, 404, null, true, "User not found");
     sendResponse(res, 200, user, false, "User fetched successfully");
   } catch (error) {
     console.error(error.message);
     sendResponse(res, 500, null, true, "Internal server error");
   }
-});
-
+})
 
 router.post("/send-email", async (req, res) => {
 

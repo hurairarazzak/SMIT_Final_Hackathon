@@ -1,16 +1,31 @@
-import { useContext } from 'react';
-import { Card, Typography, Avatar, Row, Col } from 'antd';
-import { MailOutlined, IdcardOutlined, HomeOutlined, PhoneOutlined, UserOutlined, CalendarOutlined } from '@ant-design/icons';
-import { AuthContext } from '../../context/UserContext';
+import React, { useContext } from "react";
+import { Card, Typography, Avatar, Row, Col } from "antd";
+import { AuthContext } from "../../context/UserContext";
+import {
+  MailOutlined,
+  IdcardOutlined,
+  HomeOutlined,
+  PhoneOutlined,
+  UserOutlined,
+  CalendarOutlined,
+} from "@ant-design/icons";
 
 const { Title, Paragraph } = Typography;
 
-export default function User() {
-  const { user } = useContext(AuthContext);
+const User = () => {
+  const { user } = useContext(AuthContext); // Use `user` from context
+
+  if (!user) {
+    return <Typography>No user data available.</Typography>;
+  }
 
   return (
-    <Card style={{ maxWidth: 800, margin: '50px auto', padding: 20, textAlign: 'center' }}>
-      <Avatar size={120} src={user.imageUrl} style={{ marginBottom: 20 }} />
+    <Card style={{ maxWidth: 800, margin: "50px auto", padding: 20, textAlign: "center" }}>
+      <Avatar 
+        size={120} 
+        icon={<UserOutlined />} 
+        style={{ marginBottom: 20, backgroundColor: '#87d068' }} 
+      />
       <Title level={2}>{user.fullName}</Title>
       <Row gutter={[16, 16]}>
         <Col span={12}>
@@ -40,4 +55,6 @@ export default function User() {
       </Row>
     </Card>
   );
-}
+};
+
+export default User;
