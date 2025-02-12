@@ -81,15 +81,8 @@ const UserDashboard = () => {
         return <ViewRequest />;
       case "logout":
         handleLogout();
-        return null;
-      default:
-        return <Title>Welcome!</Title>;
     }
   };
-
-  if (loading || !userData) {
-    return <Title>Loading...</Title>;
-  }
 
   const currentUser = {
     imageUrl: userData?.imageUrl || (

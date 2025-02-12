@@ -353,7 +353,7 @@ export default function LoanCalculator() {
       >
         <Form layout="vertical" form={form}>
           <Form.Item
-            label="CNIC"
+            label="CNIC (without dashes)"
             name="cnic"
             rules={[
               {
